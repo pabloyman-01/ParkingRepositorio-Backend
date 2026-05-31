@@ -195,24 +195,6 @@ mvn spring-boot:run
 | PUT | `/api/pases-invitados/{id}` | Actualizar |
 | DELETE | `/api/pases-invitados/{id}` | Eliminar |
 
-### Carritos Carga
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/carritos-carga` | Listar todos |
-| GET | `/api/carritos-carga/{id}` | Obtener por ID |
-| POST | `/api/carritos-carga` | Crear |
-| PUT | `/api/carritos-carga/{id}` | Actualizar |
-| DELETE | `/api/carritos-carga/{id}` | Eliminar |
-
-### Logs Préstamo Carrito
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/logs-prestamo` | Listar todos |
-| GET | `/api/logs-prestamo/{id}` | Obtener por ID |
-| POST | `/api/logs-prestamo` | Crear |
-| PUT | `/api/logs-prestamo/{id}` | Actualizar |
-| DELETE | `/api/logs-prestamo/{id}` | Eliminar |
-
 ## Configuración
 
 Toda la configuración se centraliza en `application.yml`:
