@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.UsuarioResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.UsuarioRequest;
 import com.parkcontrol.backend.model.Usuario;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class UsuarioApiClient {
     private final RestClient restClient;
 
-    public UsuarioApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public UsuarioApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<Usuario> findAll() {

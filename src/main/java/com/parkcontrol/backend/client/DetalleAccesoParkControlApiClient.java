@@ -1,6 +1,5 @@
 package com.parkcontrol.backend.client;
 
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.DetalleAccesoParkControlRequest;
 import com.parkcontrol.backend.model.DetalleAccesoParkControl;
 import org.springframework.stereotype.Component;
@@ -11,10 +10,8 @@ import java.util.List;
 public class DetalleAccesoParkControlApiClient {
     private final RestClient restClient;
 
-    public DetalleAccesoParkControlApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public DetalleAccesoParkControlApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<DetalleAccesoParkControl> findAll() {

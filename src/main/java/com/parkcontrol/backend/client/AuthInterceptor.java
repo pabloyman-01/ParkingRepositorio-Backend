@@ -8,6 +8,9 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AuthInterceptor implements ClientHttpRequestInterceptor {
 
     private final AuthApiClient authApiClient;

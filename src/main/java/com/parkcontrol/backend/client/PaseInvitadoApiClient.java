@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.PaseInvitadoResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.PaseInvitadoRequest;
 import com.parkcontrol.backend.model.PaseInvitado;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class PaseInvitadoApiClient {
     private final RestClient restClient;
 
-    public PaseInvitadoApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public PaseInvitadoApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<PaseInvitado> findAll() {

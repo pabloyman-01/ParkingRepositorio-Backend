@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.PisoResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.PisoRequest;
 import com.parkcontrol.backend.model.Piso;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class PisoApiClient {
     private final RestClient restClient;
 
-    public PisoApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public PisoApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<Piso> findAll() {

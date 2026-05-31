@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.EstacionamientoResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.EstacionamientoRequest;
 import com.parkcontrol.backend.model.Estacionamiento;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class EstacionamientoApiClient {
     private final RestClient restClient;
 
-    public EstacionamientoApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public EstacionamientoApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<Estacionamiento> findAll() {

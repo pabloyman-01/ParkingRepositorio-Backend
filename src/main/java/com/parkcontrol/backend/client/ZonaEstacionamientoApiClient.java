@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.ZonaEstacionamientoResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.ZonaEstacionamientoRequest;
 import com.parkcontrol.backend.model.ZonaEstacionamiento;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class ZonaEstacionamientoApiClient {
     private final RestClient restClient;
 
-    public ZonaEstacionamientoApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public ZonaEstacionamientoApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<ZonaEstacionamiento> findAll() {

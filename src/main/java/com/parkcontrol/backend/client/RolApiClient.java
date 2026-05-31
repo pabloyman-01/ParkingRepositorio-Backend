@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.RolResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.RolRequest;
 import com.parkcontrol.backend.model.Rol;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class RolApiClient {
     private final RestClient restClient;
 
-    public RolApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public RolApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<Rol> findAll() {

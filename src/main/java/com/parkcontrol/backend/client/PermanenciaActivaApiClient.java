@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.PermanenciaActivaResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.PermanenciaActivaRequest;
 import com.parkcontrol.backend.model.PermanenciaActiva;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class PermanenciaActivaApiClient {
     private final RestClient restClient;
 
-    public PermanenciaActivaApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public PermanenciaActivaApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<PermanenciaActiva> findAll() {

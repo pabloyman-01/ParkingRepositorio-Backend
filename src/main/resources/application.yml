@@ -3,7 +3,7 @@ server:
 
 external:
   api:
-    base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8081}
+    base-url: ${EXTERNAL_API_BASE_URL:https://parking-system-backend-zkk6.onrender.com}
 
 app:
   jwt:

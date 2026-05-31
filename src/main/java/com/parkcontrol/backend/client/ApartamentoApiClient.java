@@ -1,7 +1,6 @@
 package com.parkcontrol.backend.client;
 
 import com.parkcontrol.backend.client.dto.ApartamentoResponseDTO;
-import com.parkcontrol.backend.config.ApiProperties;
 import com.parkcontrol.backend.dto.ApartamentoRequest;
 import com.parkcontrol.backend.model.Apartamento;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +14,8 @@ import java.util.Map;
 public class ApartamentoApiClient {
     private final RestClient restClient;
 
-    public ApartamentoApiClient(ApiProperties apiProperties) {
-        this.restClient = RestClient.builder()
-            .baseUrl(apiProperties.getBaseUrl())
-            .build();
+    public ApartamentoApiClient(RestClient apiRestClient) {
+        this.restClient = apiRestClient;
     }
 
     public List<Apartamento> findAll() {
