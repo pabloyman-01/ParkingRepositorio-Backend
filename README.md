@@ -1,4 +1,4 @@
-# ParkControl Backend — Módulo Estructura
+# ParkControl Backend
 
 Sistema de gestión de estacionamientos. Backend que actúa como **gateway** entre el frontend y una API Central externa.
 
@@ -6,7 +6,7 @@ Sistema de gestión de estacionamientos. Backend que actúa como **gateway** ent
 
 - Java 21
 - Spring Boot 3.4
-- Spring Security + JWT (jjwt)
+- Spring Security + JWT (jjwt 0.12.6)
 - Spring Validation
 - Lombok
 - RestClient (Spring Web)
@@ -18,32 +18,44 @@ Sistema de gestión de estacionamientos. Backend que actúa como **gateway** ent
 React → Backend (gateway) → API Central → NeonDB
 ```
 
-El backend no accede directamente a la base de datos. Toda la obtención y modificación de datos se realiza mediante llamadas HTTP a la API Central.
+El backend no accede directamente a la base de datos. Toda la obtención y modificación de datos se realiza mediante llamadas HTTP a la API Central a través de la capa de proveedores API.
 
-## Rama: feature/estructura
+### Capas del proyecto
 
-Módulos incluidos:
+```
+Controller → Service → ApiProvider → ApiClient → HTTP → API Central
+```
 
-| Módulo | Entidad | Endpoints |
-|--------|---------|-----------|
-| Condominio | `Condominio` | CRUD completo |
-| Torre | `Torre` | CRUD completo |
-| Piso | `Piso` | CRUD completo |
-| Apartamento | `Apartamento` | CRUD completo |
+- **Controller**: Define los endpoints REST que consume React.
+- **Service**: Lógica de negocio y orquestación.
+- **ApiProvider**: Implementación del proveedor de datos vía API.
+- **ApiClient**: Cliente HTTP (RestClient) que realiza las llamadas a la API Central.
+
+## Ramas
+
+| Rama | Módulos |
+|------|---------|
+| `dev` | Rama principal de integración |
+| `base` | Infraestructura compartida (modelos, config, seguridad) |
+| `feature/estructura` | Condominio, Torre, Piso, Apartamento |
+| `feature/usuarios` | Rol, Usuario |
+| `feature/vehiculos` | Vehículo, Estacionamiento, ZonaEstacionamiento |
+| `feature/monitoreo` | DetallePlaza, DetalleAcceso, LogAcceso, PermanenciaActiva |
+| `feature/servicios` | PaseInvitado |
 
 ## Requisitos
 
 - Java 21
 - Maven 3.9+
-- API Central corriendo en `http://localhost:8081`
+- API Central corriendo en `http://localhost:8081` (o la URL configurada)
 
 ## Instalación
 
 ```bash
 # 1. Clonar el repositorio
-git clone -b feature/estructura <url-del-repo>
+git clone <url-del-repo>
 
-# 2. Configurar URL de la API Central (opcional, default: http://localhost:8081)
+# 2. Configurar URL de la API Central (opcional)
 export EXTERNAL_API_BASE_URL=http://localhost:8081
 
 # 3. Ejecutar
@@ -52,7 +64,12 @@ mvn spring-boot:run
 
 ## Endpoints
 
-### Condominios (`/api/condominios`)
+### Health
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/health` | Health check del servicio |
+
+### Condominios
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/condominios` | Listar todos |
@@ -61,7 +78,7 @@ mvn spring-boot:run
 | PUT | `/api/condominios/{id}` | Actualizar |
 | DELETE | `/api/condominios/{id}` | Eliminar |
 
-### Torres (`/api/torres`)
+### Torres
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/torres` | Listar todas |
@@ -70,7 +87,7 @@ mvn spring-boot:run
 | PUT | `/api/torres/{id}` | Actualizar |
 | DELETE | `/api/torres/{id}` | Eliminar |
 
-### Pisos (`/api/pisos`)
+### Pisos
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/pisos` | Listar todos |
@@ -79,7 +96,7 @@ mvn spring-boot:run
 | PUT | `/api/pisos/{id}` | Actualizar |
 | DELETE | `/api/pisos/{id}` | Eliminar |
 
-### Apartamentos (`/api/apartamentos`)
+### Apartamentos
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/apartamentos` | Listar todos |
@@ -87,6 +104,114 @@ mvn spring-boot:run
 | POST | `/api/apartamentos` | Crear |
 | PUT | `/api/apartamentos/{id}` | Actualizar |
 | DELETE | `/api/apartamentos/{id}` | Eliminar |
+
+### Roles
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/roles` | Listar todos |
+| GET | `/api/roles/{id}` | Obtener por ID |
+| POST | `/api/roles` | Crear |
+| PUT | `/api/roles/{id}` | Actualizar |
+| DELETE | `/api/roles/{id}` | Eliminar |
+
+### Usuarios
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/usuarios` | Listar todos |
+| GET | `/api/usuarios/{id}` | Obtener por ID |
+| POST | `/api/usuarios` | Crear |
+| PUT | `/api/usuarios/{id}` | Actualizar |
+| DELETE | `/api/usuarios/{id}` | Eliminar |
+
+### Vehículos
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/vehiculos` | Listar todos |
+| GET | `/api/vehiculos/{id}` | Obtener por ID |
+| POST | `/api/vehiculos` | Crear |
+| PUT | `/api/vehiculos/{id}` | Actualizar |
+| DELETE | `/api/vehiculos/{id}` | Eliminar |
+
+### Estacionamientos
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/estacionamientos` | Listar todos |
+| GET | `/api/estacionamientos/{id}` | Obtener por ID |
+| POST | `/api/estacionamientos` | Crear |
+| PUT | `/api/estacionamientos/{id}` | Actualizar |
+| DELETE | `/api/estacionamientos/{id}` | Eliminar |
+
+### Zonas Estacionamiento
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/zonas-estacionamiento` | Listar todas |
+| GET | `/api/zonas-estacionamiento/{id}` | Obtener por ID |
+| POST | `/api/zonas-estacionamiento` | Crear |
+| PUT | `/api/zonas-estacionamiento/{id}` | Actualizar |
+| DELETE | `/api/zonas-estacionamiento/{id}` | Eliminar |
+
+### Detalles Plaza
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/detalles-plaza` | Listar todos |
+| GET | `/api/detalles-plaza/{id}` | Obtener por ID |
+| POST | `/api/detalles-plaza` | Crear |
+| PUT | `/api/detalles-plaza/{id}` | Actualizar |
+| DELETE | `/api/detalles-plaza/{id}` | Eliminar |
+
+### Detalles Acceso
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/detalles-acceso` | Listar todos |
+| GET | `/api/detalles-acceso/{id}` | Obtener por ID |
+| POST | `/api/detalles-acceso` | Crear |
+| PUT | `/api/detalles-acceso/{id}` | Actualizar |
+| DELETE | `/api/detalles-acceso/{id}` | Eliminar |
+
+### Logs Acceso Vehicular
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/logs-acceso` | Listar todos |
+| GET | `/api/logs-acceso/{id}` | Obtener por ID |
+| POST | `/api/logs-acceso` | Crear |
+| PUT | `/api/logs-acceso/{id}` | Actualizar |
+| DELETE | `/api/logs-acceso/{id}` | Eliminar |
+
+### Permanencias Activas
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/permanencias-activas` | Listar todas |
+| GET | `/api/permanencias-activas/{id}` | Obtener por ID |
+| POST | `/api/permanencias-activas` | Crear |
+| PUT | `/api/permanencias-activas/{id}` | Actualizar |
+| DELETE | `/api/permanencias-activas/{id}` | Eliminar |
+
+### Pases Invitados
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/pases-invitados` | Listar todos |
+| GET | `/api/pases-invitados/{id}` | Obtener por ID |
+| POST | `/api/pases-invitados` | Crear |
+| PUT | `/api/pases-invitados/{id}` | Actualizar |
+| DELETE | `/api/pases-invitados/{id}` | Eliminar |
+
+### Carritos Carga
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/carritos-carga` | Listar todos |
+| GET | `/api/carritos-carga/{id}` | Obtener por ID |
+| POST | `/api/carritos-carga` | Crear |
+| PUT | `/api/carritos-carga/{id}` | Actualizar |
+| DELETE | `/api/carritos-carga/{id}` | Eliminar |
+
+### Logs Préstamo Carrito
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/logs-prestamo` | Listar todos |
+| GET | `/api/logs-prestamo/{id}` | Obtener por ID |
+| POST | `/api/logs-prestamo` | Crear |
+| PUT | `/api/logs-prestamo/{id}` | Actualizar |
+| DELETE | `/api/logs-prestamo/{id}` | Eliminar |
 
 ## Configuración
 
@@ -98,8 +223,12 @@ external:
     base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8081}
 ```
 
-Para cambiar a producción, solo modificar la variable de entorno:
+Para cambiar de entorno, solo modificar la variable de entorno:
 
 ```bash
+# Desarrollo
+export EXTERNAL_API_BASE_URL=http://localhost:8081
+
+# Producción
 export EXTERNAL_API_BASE_URL=https://api-produccion.com
 ```
