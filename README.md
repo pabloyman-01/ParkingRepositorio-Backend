@@ -2,6 +2,10 @@
 
 Sistema de gestión de estacionamientos. Backend que actúa como **gateway** entre el frontend y una API Central externa.
 
+## Documentación API
+
+- **Apidog:** [sizfi8yxf5.apidog.io](https://sizfi8yxf5.apidog.io)
+
 ## Stack
 
 - Java 21
