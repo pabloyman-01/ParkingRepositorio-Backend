@@ -1,107 +1,105 @@
-# ParkControl Backend
+# ParkControl Backend — Módulo Estructura
 
-Sistema de gestión de estacionamientos — Spring Boot 3 + Java 21 + JPA + PostgreSQL + JWT.
+Sistema de gestión de estacionamientos. Backend que actúa como **gateway** entre el frontend y una API Central externa.
 
 ## Stack
 
 - Java 21
 - Spring Boot 3.4
-- Spring Data JPA (Hibernate)
 - Spring Security + JWT (jjwt)
-- PostgreSQL
+- Spring Validation
 - Lombok
-- Jakarta Validation
+- RestClient (Spring Web)
 - Maven
 
-## Ramas
+## Arquitectura
 
-| Rama | Módulo |
-|------|--------|
-| `dev` | Base: entidades JPA, repositorios, config seguridad, common |
-| `feature/auth-usuarios` | Autenticación (register, login, refresh, profile) |
-| `feature/vehiculos` | CRUD vehículos con filtros y paginación |
-| `feature/estacionamiento-mapa` | Mapa de estacionamiento, zonas, plazas, disponibilidad |
-| `feature/control-acceso` | Registro de entrada/salida, control de garita |
-| `feature/historial-accesos` | Historial con filtros por fecha/placa/estado |
-| `feature/pases-invitados` | Pases temporales con código único |
-| `feature/permanencia-dashboard` | Dashboard con KPIs y permanencias activas |
+```
+React → Backend (gateway) → API Central → NeonDB
+```
+
+El backend no accede directamente a la base de datos. Toda la obtención y modificación de datos se realiza mediante llamadas HTTP a la API Central.
+
+## Rama: feature/estructura
+
+Módulos incluidos:
+
+| Módulo | Entidad | Endpoints |
+|--------|---------|-----------|
+| Condominio | `Condominio` | CRUD completo |
+| Torre | `Torre` | CRUD completo |
+| Piso | `Piso` | CRUD completo |
+| Apartamento | `Apartamento` | CRUD completo |
 
 ## Requisitos
 
 - Java 21
-- PostgreSQL 14+
-- Maven 3.9+ (o usar `mvnw`)
+- Maven 3.9+
+- API Central corriendo en `http://localhost:8081`
 
 ## Instalación
 
 ```bash
-# 1. Crear base de datos PostgreSQL
-createdb parkcontrol
+# 1. Clonar el repositorio
+git clone -b feature/estructura <url-del-repo>
 
-# 2. Ejecutar migración (usa el script SQL)
-psql -d parkcontrol -f ParkControl.sql
+# 2. Configurar URL de la API Central (opcional, default: http://localhost:8081)
+export EXTERNAL_API_BASE_URL=http://localhost:8081
 
-# 3. Configurar variables de entorno
-export DATABASE_URL=jdbc:postgresql://localhost:5432/parkcontrol
-export DB_USERNAME=postgres
-export DB_PASSWORD=postgres
-export JWT_SECRET=your-256-bit-secret
-
-# 4. Ejecutar
-./mvnw spring-boot:run
+# 3. Ejecutar
+mvn spring-boot:run
 ```
 
 ## Endpoints
 
-### Auth (`/api/auth`)
+### Condominios (`/api/condominios`)
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| POST | `/api/auth/register` | Registrar usuario |
-| POST | `/api/auth/login` | Iniciar sesión |
-| POST | `/api/auth/refresh` | Refrescar token |
-| POST | `/api/auth/logout` | Cerrar sesión |
-| GET | `/api/auth/profile` | Perfil del usuario |
+| GET | `/api/condominios` | Listar todos |
+| GET | `/api/condominios/{id}` | Obtener por ID |
+| POST | `/api/condominios` | Crear |
+| PUT | `/api/condominios/{id}` | Actualizar |
+| DELETE | `/api/condominios/{id}` | Eliminar |
 
-### Vehículos (`/api/vehicles`)
+### Torres (`/api/torres`)
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| GET | `/api/vehicles` | Listar (paginado, filtros) |
-| GET | `/api/vehicles/{id}` | Detalle |
-| POST | `/api/vehicles` | Crear |
-| PATCH | `/api/vehicles/{id}` | Actualizar |
-| DELETE | `/api/vehicles/{id}` | Eliminar (soft delete) |
+| GET | `/api/torres` | Listar todas |
+| GET | `/api/torres/{id}` | Obtener por ID |
+| POST | `/api/torres` | Crear |
+| PUT | `/api/torres/{id}` | Actualizar |
+| DELETE | `/api/torres/{id}` | Eliminar |
 
-### Estacionamiento (`/api/parking`)
+### Pisos (`/api/pisos`)
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| GET | `/api/parking/map` | Mapa completo |
-| GET | `/api/parking/spaces` | Lista de plazas |
-| PATCH | `/api/parking/spaces/{id}/status` | Cambiar estado |
-| POST | `/api/parking/spaces/{id}/assign` | Asignar vehículo |
+| GET | `/api/pisos` | Listar todos |
+| GET | `/api/pisos/{id}` | Obtener por ID |
+| POST | `/api/pisos` | Crear |
+| PUT | `/api/pisos/{id}` | Actualizar |
+| DELETE | `/api/pisos/{id}` | Eliminar |
 
-### Control de Acceso (`/api/access`)
+### Apartamentos (`/api/apartamentos`)
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| POST | `/api/access/entry` | Registrar entrada |
-| POST | `/api/access/exit` | Registrar salida |
-| GET | `/api/access/status/{placa}` | Estado por placa |
+| GET | `/api/apartamentos` | Listar todos |
+| GET | `/api/apartamentos/{id}` | Obtener por ID |
+| POST | `/api/apartamentos` | Crear |
+| PUT | `/api/apartamentos/{id}` | Actualizar |
+| DELETE | `/api/apartamentos/{id}` | Eliminar |
 
-### Historial (`/api/history`)
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/history` | Listar historial (paginado, filtros) |
-| GET | `/api/history/{id}` | Detalle |
+## Configuración
 
-### Pases Invitados (`/api/guest-pass`)
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| POST | `/api/guest-pass` | Crear pase |
-| GET | `/api/guest-pass/{id}` | Detalle |
-| POST | `/api/guest-pass/validate` | Validar pase |
+Toda la configuración se centraliza en `application.yml`:
 
-### Dashboard (`/api/dashboard`)
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/dashboard/summary` | Resumen KPIs |
-| GET | `/api/dashboard/occupancy` | Ocupación detallada |
-| GET | `/api/dashboard/permanence` | Permanencias activas |
+```yaml
+external:
+  api:
+    base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8081}
+```
+
+Para cambiar a producción, solo modificar la variable de entorno:
+
+```bash
+export EXTERNAL_API_BASE_URL=https://api-produccion.com
+```
