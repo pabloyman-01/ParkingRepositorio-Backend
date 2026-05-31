@@ -1,10 +1,14 @@
 package com.parkcontrol.backend.client;
 
+import com.parkcontrol.backend.client.dto.LogAccesoVehicularResponseDTO;
 import com.parkcontrol.backend.dto.LogAccesoVehicularRequest;
 import com.parkcontrol.backend.model.LogAccesoVehicular;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class LogAccesoVehicularApiClient {
@@ -15,22 +19,61 @@ public class LogAccesoVehicularApiClient {
     }
 
     public List<LogAccesoVehicular> findAll() {
-        throw new UnsupportedOperationException("API not implemented yet");
+        List<LogAccesoVehicularResponseDTO> dtos = restClient.get()
+            .uri("/api/logs-acceso-vehicular")
+            .retrieve()
+            .body(new ParameterizedTypeReference<List<LogAccesoVehicularResponseDTO>>() {});
+        return dtos.stream()
+            .map(MappingUtil::toLogAccesoVehicular)
+            .toList();
     }
 
     public LogAccesoVehicular findById(Integer id) {
-        throw new UnsupportedOperationException("API not implemented yet");
+        LogAccesoVehicularResponseDTO dto = restClient.get()
+            .uri("/api/logs-acceso-vehicular/{id}", id)
+            .retrieve()
+            .body(LogAccesoVehicularResponseDTO.class);
+        return MappingUtil.toLogAccesoVehicular(dto);
     }
 
     public LogAccesoVehicular create(LogAccesoVehicularRequest request) {
-        throw new UnsupportedOperationException("API not implemented yet");
+        Map<String, Object> body = Map.of(
+            "tipo", request.tipoOcupante(),
+            "metodo", request.metodo(),
+            "fechaHora", request.timestampEntrada().toString(),
+            "observacion", "",
+            "vehiculoId", request.idEstacionamiento(),
+            "paseInvitadoId", null
+        );
+        LogAccesoVehicularResponseDTO dto = restClient.post()
+            .uri("/api/logs-acceso-vehicular/create")
+            .body(body)
+            .retrieve()
+            .body(LogAccesoVehicularResponseDTO.class);
+        return MappingUtil.toLogAccesoVehicular(dto);
     }
 
     public LogAccesoVehicular update(Integer id, LogAccesoVehicularRequest request) {
-        throw new UnsupportedOperationException("API not implemented yet");
+        Map<String, Object> body = Map.of(
+            "tipo", request.tipoOcupante(),
+            "metodo", request.metodo(),
+            "fechaHora", request.timestampEntrada().toString(),
+            "observacion", "",
+            "vehiculoId", request.idEstacionamiento(),
+            "paseInvitadoId", null
+        );
+        LogAccesoVehicularResponseDTO dto = restClient.put()
+            .uri("/api/logs-acceso-vehicular/{id}/update", id)
+            .body(body)
+            .retrieve()
+            .body(LogAccesoVehicularResponseDTO.class);
+        return MappingUtil.toLogAccesoVehicular(dto);
     }
 
     public void delete(Integer id) {
-        throw new UnsupportedOperationException("API not implemented yet");
+        restClient.delete()
+            .uri("/api/logs-acceso-vehicular/{id}/delete", id)
+            .retrieve()
+            .toBodilessEntity();
     }
 }
