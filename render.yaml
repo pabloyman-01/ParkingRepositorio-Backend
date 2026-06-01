@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: parkcontrol-backend
+    runtime: java
+    branch: dev
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/backend-1.0.0.jar
+    envVars:
+      - key: EXTERNAL_API_BASE_URL
+        value: https://parking-system-backend-zkk6.onrender.com
+      - key: JWT_SECRET
+        value: Zm9vYmFyYmF6cXV4dGhpc2lzYXRlc3RzZWNyZXRmb3JwYXJrbGluZ3Rva2Vu
