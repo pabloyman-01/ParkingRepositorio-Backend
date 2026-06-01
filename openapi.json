@@ -1,0 +1,425 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ParkControl Backend API",
+    "description": "API Gateway que consume la API Central de estacionamientos",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://parkingrepositorio-backend.onrender.com",
+      "description": "Produccion (Render)"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Health check",
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      }
+    },
+    "/api/condominios": {
+      "get": {
+        "tags": ["Condominios"],
+        "summary": "Listar todos",
+        "responses": { "200": { "description": "Lista de condominios" } }
+      },
+      "post": {
+        "tags": ["Condominios"],
+        "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "direccion": { "type": "string" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/condominios/{id}": {
+      "get": {
+        "tags": ["Condominios"],
+        "summary": "Obtener por ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "Condominio encontrado" } }
+      },
+      "put": {
+        "tags": ["Condominios"],
+        "summary": "Actualizar",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "direccion": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Actualizado" } }
+      },
+      "delete": {
+        "tags": ["Condominios"],
+        "summary": "Eliminar",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "204": { "description": "Eliminado" } }
+      }
+    },
+    "/api/torres": {
+      "get": { "tags": ["Torres"], "summary": "Listar todas", "responses": { "200": { "description": "Lista de torres" } } },
+      "post": {
+        "tags": ["Torres"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "idCondominio": { "type": "integer" }
+                },
+                "required": ["nombre", "idCondominio"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/torres/{id}": {
+      "get": { "tags": ["Torres"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Torre encontrada" } } },
+      "put": { "tags": ["Torres"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "nombre": { "type": "string" }, "idCondominio": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Torres"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/pisos": {
+      "get": { "tags": ["Pisos"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de pisos" } } },
+      "post": {
+        "tags": ["Pisos"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numeroPiso": { "type": "integer" },
+                  "idTorre": { "type": "integer" }
+                },
+                "required": ["numeroPiso", "idTorre"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/pisos/{id}": {
+      "get": { "tags": ["Pisos"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Piso encontrado" } } },
+      "put": { "tags": ["Pisos"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "numeroPiso": { "type": "integer" }, "idTorre": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Pisos"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/apartamentos": {
+      "get": { "tags": ["Apartamentos"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de apartamentos" } } },
+      "post": {
+        "tags": ["Apartamentos"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numero": { "type": "string" },
+                  "metraje": { "type": "number" },
+                  "derechoEstacionamiento": { "type": "boolean" },
+                  "idPiso": { "type": "integer" }
+                },
+                "required": ["numero", "idPiso"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/apartamentos/{id}": {
+      "get": { "tags": ["Apartamentos"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Apartamento encontrado" } } },
+      "put": { "tags": ["Apartamentos"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "numero": { "type": "string" }, "metraje": { "type": "number" }, "derechoEstacionamiento": { "type": "boolean" }, "idPiso": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Apartamentos"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/roles": {
+      "get": { "tags": ["Roles"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de roles" } } },
+      "post": { "tags": ["Roles"], "summary": "Crear", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "nombreRol": { "type": "string" } }, "required": ["nombreRol"] } } } }, "responses": { "201": { "description": "Creado" } } }
+    },
+    "/api/roles/{id}": {
+      "get": { "tags": ["Roles"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Rol encontrado" } } },
+      "put": { "tags": ["Roles"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "nombreRol": { "type": "string" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Roles"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/usuarios": {
+      "get": { "tags": ["Usuarios"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de usuarios" } } },
+      "post": {
+        "tags": ["Usuarios"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombreCompleto": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "passwordHash": { "type": "string" },
+                  "idRol": { "type": "integer" },
+                  "idCondominio": { "type": "integer" }
+                },
+                "required": ["nombreCompleto", "email", "passwordHash", "idRol"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/usuarios/{id}": {
+      "get": { "tags": ["Usuarios"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Usuario encontrado" } } },
+      "put": { "tags": ["Usuarios"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "nombreCompleto": { "type": "string" }, "email": { "type": "string" }, "passwordHash": { "type": "string" }, "idRol": { "type": "integer" }, "idCondominio": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Usuarios"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/vehiculos": {
+      "get": { "tags": ["Vehículos"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de vehículos" } } },
+      "post": {
+        "tags": ["Vehículos"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matricula": { "type": "string" },
+                  "marcaModelo": { "type": "string" },
+                  "tipoRegistro": { "type": "string" },
+                  "estado": { "type": "string" },
+                  "fechaExpiracion": { "type": "string", "format": "date-time" },
+                  "propietarioNombre": { "type": "string" },
+                  "idApartamento": { "type": "integer" },
+                  "idUsuarioPropietario": { "type": "integer" }
+                },
+                "required": ["matricula", "tipoRegistro", "estado", "idApartamento"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/vehiculos/{id}": {
+      "get": { "tags": ["Vehículos"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Vehículo encontrado" } } },
+      "put": { "tags": ["Vehículos"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "matricula": { "type": "string" }, "marcaModelo": { "type": "string" }, "tipoRegistro": { "type": "string" }, "estado": { "type": "string" }, "fechaExpiracion": { "type": "string", "format": "date-time" }, "propietarioNombre": { "type": "string" }, "idApartamento": { "type": "integer" }, "idUsuarioPropietario": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Vehículos"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/estacionamientos": {
+      "get": { "tags": ["Estacionamientos"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de estacionamientos" } } },
+      "post": {
+        "tags": ["Estacionamientos"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigoPlaza": { "type": "string" },
+                  "tipo": { "type": "string" },
+                  "idApartamento": { "type": "integer" }
+                },
+                "required": ["codigoPlaza"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/estacionamientos/{id}": {
+      "get": { "tags": ["Estacionamientos"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Estacionamiento encontrado" } } },
+      "put": { "tags": ["Estacionamientos"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "codigoPlaza": { "type": "string" }, "tipo": { "type": "string" }, "idApartamento": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Estacionamientos"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/zonas-estacionamiento": {
+      "get": { "tags": ["Zonas Estacionamiento"], "summary": "Listar todas", "responses": { "200": { "description": "Lista de zonas" } } },
+      "post": {
+        "tags": ["Zonas Estacionamiento"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigo": { "type": "string" },
+                  "nombre": { "type": "string" },
+                  "idCondominio": { "type": "integer" }
+                },
+                "required": ["codigo", "idCondominio"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/zonas-estacionamiento/{id}": {
+      "get": { "tags": ["Zonas Estacionamiento"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Zona encontrada" } } },
+      "put": { "tags": ["Zonas Estacionamiento"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "codigo": { "type": "string" }, "nombre": { "type": "string" }, "idCondominio": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Zonas Estacionamiento"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/detalles-plaza": {
+      "get": { "tags": ["Detalles Plaza"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de detalles" } } },
+      "post": {
+        "tags": ["Detalles Plaza"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idEstacionamiento": { "type": "integer" },
+                  "idZona": { "type": "integer" },
+                  "estadoOcupacion": { "type": "string" },
+                  "idVehiculoActual": { "type": "integer" }
+                },
+                "required": ["idEstacionamiento", "estadoOcupacion"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/detalles-plaza/{id}": {
+      "get": { "tags": ["Detalles Plaza"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Detalle encontrado" } } },
+      "put": { "tags": ["Detalles Plaza"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "idEstacionamiento": { "type": "integer" }, "idZona": { "type": "integer" }, "estadoOcupacion": { "type": "string" }, "idVehiculoActual": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Detalles Plaza"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/logs-acceso": {
+      "get": { "tags": ["Logs Acceso"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de logs" } } },
+      "post": {
+        "tags": ["Logs Acceso"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idEstacionamiento": { "type": "integer" },
+                  "matricula": { "type": "string" },
+                  "tipoOcupante": { "type": "string" },
+                  "metodo": { "type": "string" },
+                  "timestampEntrada": { "type": "string", "format": "date-time" },
+                  "timestampSalida": { "type": "string", "format": "date-time" }
+                },
+                "required": ["matricula"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/logs-acceso/{id}": {
+      "get": { "tags": ["Logs Acceso"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Log encontrado" } } },
+      "put": { "tags": ["Logs Acceso"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "idEstacionamiento": { "type": "integer" }, "matricula": { "type": "string" }, "tipoOcupante": { "type": "string" }, "metodo": { "type": "string" }, "timestampEntrada": { "type": "string", "format": "date-time" }, "timestampSalida": { "type": "string", "format": "date-time" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Logs Acceso"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/permanencias-activas": {
+      "get": { "tags": ["Permanencias Activas"], "summary": "Listar todas", "responses": { "200": { "description": "Lista de permanencias" } } },
+      "post": {
+        "tags": ["Permanencias Activas"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idLogV": { "type": "integer" },
+                  "idEstacionamiento": { "type": "integer" },
+                  "idApartamento": { "type": "integer" },
+                  "placa": { "type": "string" },
+                  "horaEntrada": { "type": "string", "format": "date-time" }
+                },
+                "required": ["idLogV", "placa", "horaEntrada"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/permanencias-activas/{id}": {
+      "get": { "tags": ["Permanencias Activas"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Permanencia encontrada" } } },
+      "put": { "tags": ["Permanencias Activas"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "idLogV": { "type": "integer" }, "idEstacionamiento": { "type": "integer" }, "idApartamento": { "type": "integer" }, "placa": { "type": "string" }, "horaEntrada": { "type": "string", "format": "date-time" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Permanencias Activas"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    },
+    "/api/pases-invitados": {
+      "get": { "tags": ["Pases Invitados"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de pases" } } },
+      "post": {
+        "tags": ["Pases Invitados"], "summary": "Crear",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigoPase": { "type": "string" },
+                  "matricula": { "type": "string" },
+                  "idApartamento": { "type": "integer" },
+                  "idUsuarioEmisor": { "type": "integer" },
+                  "fechaInicio": { "type": "string", "format": "date-time" },
+                  "fechaFin": { "type": "string", "format": "date-time" },
+                  "estado": { "type": "string" }
+                },
+                "required": ["matricula", "idApartamento", "fechaInicio", "fechaFin", "estado"]
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Creado" } }
+      }
+    },
+    "/api/pases-invitados/{id}": {
+      "get": { "tags": ["Pases Invitados"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Pase encontrado" } } },
+      "put": { "tags": ["Pases Invitados"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "codigoPase": { "type": "string" }, "matricula": { "type": "string" }, "idApartamento": { "type": "integer" }, "idUsuarioEmisor": { "type": "integer" }, "fechaInicio": { "type": "string", "format": "date-time" }, "fechaFin": { "type": "string", "format": "date-time" }, "estado": { "type": "string" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
+      "delete": { "tags": ["Pases Invitados"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
+    }
+  }
+}

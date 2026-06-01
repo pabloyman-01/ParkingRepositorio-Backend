@@ -1,0 +1,16 @@
+server:
+  port: ${PORT:8080}
+
+external:
+  api:
+    base-url: ${EXTERNAL_API_BASE_URL:https://parking-system-backend-zkk6.onrender.com}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:Zm9vYmFyYmF6cXV4dGhpc2lzYXRlc3RzZWNyZXRmb3JwYXJrbGluZ3Rva2Vu}
+    expiration-ms: ${JWT_EXPIRATION_MS:28800000}
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+
+logging:
+  level:
+    com.parkcontrol: DEBUG
