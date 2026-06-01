@@ -7,8 +7,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
-      "description": "Desarrollo local"
+      "url": "https://parkingrepositorio-backend.onrender.com",
+      "description": "Produccion (Render)"
     }
   ],
   "paths": {
