@@ -5,6 +5,7 @@ Sistema de gestión de estacionamientos. Backend que actúa como **gateway** ent
 ## Documentación API
 
 - **Apidog:** [sizfi8yxf5.apidog.io](https://sizfi8yxf5.apidog.io)
+- **Producción:** [https://parkingrepositorio-backend.onrender.com](https://parkingrepositorio-backend.onrender.com)
 
 ## Stack
 
@@ -15,6 +16,7 @@ Sistema de gestión de estacionamientos. Backend que actúa como **gateway** ent
 - Lombok
 - RestClient (Spring Web)
 - Maven
+- Docker
 
 ## Arquitectura
 
@@ -44,177 +46,151 @@ Controller → Service → ApiProvider → ApiClient → HTTP → API Central
 | `feature/estructura` | Condominio, Torre, Piso, Apartamento |
 | `feature/usuarios` | Rol, Usuario |
 | `feature/vehiculos` | Vehículo, Estacionamiento, ZonaEstacionamiento |
-| `feature/monitoreo` | DetallePlaza, DetalleAcceso, LogAcceso, PermanenciaActiva |
+| `feature/monitoreo` | DetallePlaza, LogAcceso, PermanenciaActiva |
 | `feature/servicios` | PaseInvitado |
+| `respaldo` | Backup de `dev` |
 
-## Requisitos
+## Despliegue en Render
 
-- Java 21
-- Maven 3.9+
-- API Central corriendo en `http://localhost:8081` (o la URL configurada)
+El proyecto incluye un `Dockerfile` para desplegar en Render.
 
-## Instalación
+1. Conectar repositorio de GitHub a Render
+2. Crear Web Service (detecta Docker automáticamente)
+3. Configurar variables de entorno:
 
 ```bash
-# 1. Clonar el repositorio
+EXTERNAL_API_BASE_URL=https://parking-system-backend-zkk6.onrender.com
+JWT_SECRET=<tu-secreto-jwt>
+```
+
+## Instalación local
+
+```bash
 git clone <url-del-repo>
-
-# 2. Configurar URL de la API Central (opcional)
-export EXTERNAL_API_BASE_URL=http://localhost:8081
-
-# 3. Ejecutar
+cd ParkingRepositorio-Backend
 mvn spring-boot:run
 ```
 
 ## Endpoints
 
 ### Health
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/health` | Health check del servicio |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/health` |
 
 ### Condominios
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/condominios` | Listar todos |
-| GET | `/api/condominios/{id}` | Obtener por ID |
-| POST | `/api/condominios` | Crear |
-| PUT | `/api/condominios/{id}` | Actualizar |
-| DELETE | `/api/condominios/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/condominios` |
+| GET | `/api/condominios/{id}` |
+| POST | `/api/condominios` |
+| PUT | `/api/condominios/{id}` |
+| DELETE | `/api/condominios/{id}` |
 
 ### Torres
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/torres` | Listar todas |
-| GET | `/api/torres/{id}` | Obtener por ID |
-| POST | `/api/torres` | Crear |
-| PUT | `/api/torres/{id}` | Actualizar |
-| DELETE | `/api/torres/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/torres` |
+| GET | `/api/torres/{id}` |
+| POST | `/api/torres` |
+| PUT | `/api/torres/{id}` |
+| DELETE | `/api/torres/{id}` |
 
 ### Pisos
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/pisos` | Listar todos |
-| GET | `/api/pisos/{id}` | Obtener por ID |
-| POST | `/api/pisos` | Crear |
-| PUT | `/api/pisos/{id}` | Actualizar |
-| DELETE | `/api/pisos/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/pisos` |
+| GET | `/api/pisos/{id}` |
+| POST | `/api/pisos` |
+| PUT | `/api/pisos/{id}` |
+| DELETE | `/api/pisos/{id}` |
 
 ### Apartamentos
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/apartamentos` | Listar todos |
-| GET | `/api/apartamentos/{id}` | Obtener por ID |
-| POST | `/api/apartamentos` | Crear |
-| PUT | `/api/apartamentos/{id}` | Actualizar |
-| DELETE | `/api/apartamentos/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/apartamentos` |
+| GET | `/api/apartamentos/{id}` |
+| POST | `/api/apartamentos` |
+| PUT | `/api/apartamentos/{id}` |
+| DELETE | `/api/apartamentos/{id}` |
 
 ### Roles
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/roles` | Listar todos |
-| GET | `/api/roles/{id}` | Obtener por ID |
-| POST | `/api/roles` | Crear |
-| PUT | `/api/roles/{id}` | Actualizar |
-| DELETE | `/api/roles/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/roles` |
+| GET | `/api/roles/{id}` |
+| POST | `/api/roles` |
+| PUT | `/api/roles/{id}` |
+| DELETE | `/api/roles/{id}` |
 
 ### Usuarios
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/usuarios` | Listar todos |
-| GET | `/api/usuarios/{id}` | Obtener por ID |
-| POST | `/api/usuarios` | Crear |
-| PUT | `/api/usuarios/{id}` | Actualizar |
-| DELETE | `/api/usuarios/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/usuarios` |
+| GET | `/api/usuarios/{id}` |
+| POST | `/api/usuarios` |
+| PUT | `/api/usuarios/{id}` |
+| DELETE | `/api/usuarios/{id}` |
 
 ### Vehículos
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/vehiculos` | Listar todos |
-| GET | `/api/vehiculos/{id}` | Obtener por ID |
-| POST | `/api/vehiculos` | Crear |
-| PUT | `/api/vehiculos/{id}` | Actualizar |
-| DELETE | `/api/vehiculos/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/vehiculos` |
+| GET | `/api/vehiculos/{id}` |
+| POST | `/api/vehiculos` |
+| PUT | `/api/vehiculos/{id}` |
+| DELETE | `/api/vehiculos/{id}` |
 
 ### Estacionamientos
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/estacionamientos` | Listar todos |
-| GET | `/api/estacionamientos/{id}` | Obtener por ID |
-| POST | `/api/estacionamientos` | Crear |
-| PUT | `/api/estacionamientos/{id}` | Actualizar |
-| DELETE | `/api/estacionamientos/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/estacionamientos` |
+| GET | `/api/estacionamientos/{id}` |
+| POST | `/api/estacionamientos` |
+| PUT | `/api/estacionamientos/{id}` |
+| DELETE | `/api/estacionamientos/{id}` |
 
 ### Zonas Estacionamiento
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/zonas-estacionamiento` | Listar todas |
-| GET | `/api/zonas-estacionamiento/{id}` | Obtener por ID |
-| POST | `/api/zonas-estacionamiento` | Crear |
-| PUT | `/api/zonas-estacionamiento/{id}` | Actualizar |
-| DELETE | `/api/zonas-estacionamiento/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/zonas-estacionamiento` |
+| GET | `/api/zonas-estacionamiento/{id}` |
+| POST | `/api/zonas-estacionamiento` |
+| PUT | `/api/zonas-estacionamiento/{id}` |
+| DELETE | `/api/zonas-estacionamiento/{id}` |
 
 ### Detalles Plaza
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/detalles-plaza` | Listar todos |
-| GET | `/api/detalles-plaza/{id}` | Obtener por ID |
-| POST | `/api/detalles-plaza` | Crear |
-| PUT | `/api/detalles-plaza/{id}` | Actualizar |
-| DELETE | `/api/detalles-plaza/{id}` | Eliminar |
-
-### Detalles Acceso
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/detalles-acceso` | Listar todos |
-| GET | `/api/detalles-acceso/{id}` | Obtener por ID |
-| POST | `/api/detalles-acceso` | Crear |
-| PUT | `/api/detalles-acceso/{id}` | Actualizar |
-| DELETE | `/api/detalles-acceso/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/detalles-plaza` |
+| GET | `/api/detalles-plaza/{id}` |
+| POST | `/api/detalles-plaza` |
+| PUT | `/api/detalles-plaza/{id}` |
+| DELETE | `/api/detalles-plaza/{id}` |
 
 ### Logs Acceso Vehicular
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/logs-acceso` | Listar todos |
-| GET | `/api/logs-acceso/{id}` | Obtener por ID |
-| POST | `/api/logs-acceso` | Crear |
-| PUT | `/api/logs-acceso/{id}` | Actualizar |
-| DELETE | `/api/logs-acceso/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/logs-acceso` |
+| GET | `/api/logs-acceso/{id}` |
+| POST | `/api/logs-acceso` |
+| PUT | `/api/logs-acceso/{id}` |
+| DELETE | `/api/logs-acceso/{id}` |
 
 ### Permanencias Activas
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/permanencias-activas` | Listar todas |
-| GET | `/api/permanencias-activas/{id}` | Obtener por ID |
-| POST | `/api/permanencias-activas` | Crear |
-| PUT | `/api/permanencias-activas/{id}` | Actualizar |
-| DELETE | `/api/permanencias-activas/{id}` | Eliminar |
+| Método | Ruta |
+|--------|------|
+| GET | `/api/permanencias-activas` |
+| GET | `/api/permanencias-activas/{id}` |
+| POST | `/api/permanencias-activas` |
+| PUT | `/api/permanencias-activas/{id}` |
+| DELETE | `/api/permanencias-activas/{id}` |
 
 ### Pases Invitados
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| GET | `/api/pases-invitados` | Listar todos |
-| GET | `/api/pases-invitados/{id}` | Obtener por ID |
-| POST | `/api/pases-invitados` | Crear |
-| PUT | `/api/pases-invitados/{id}` | Actualizar |
-| DELETE | `/api/pases-invitados/{id}` | Eliminar |
-
-## Configuración
-
-Toda la configuración se centraliza en `application.yml`:
-
-```yaml
-external:
-  api:
-    base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8081}
-```
-
-Para cambiar de entorno, solo modificar la variable de entorno:
-
-```bash
-# Desarrollo
-export EXTERNAL_API_BASE_URL=http://localhost:8081
-
-# Producción
-export EXTERNAL_API_BASE_URL=https://api-produccion.com
-```
+| Método | Ruta |
+|--------|------|
+| GET | `/api/pases-invitados` |
+| GET | `/api/pases-invitados/{id}` |
+| POST | `/api/pases-invitados` |
+| PUT | `/api/pases-invitados/{id}` |
+| DELETE | `/api/pases-invitados/{id}` |

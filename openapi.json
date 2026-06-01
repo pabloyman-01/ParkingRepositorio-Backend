@@ -328,37 +328,6 @@
       "put": { "tags": ["Detalles Plaza"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "idEstacionamiento": { "type": "integer" }, "idZona": { "type": "integer" }, "estadoOcupacion": { "type": "string" }, "idVehiculoActual": { "type": "integer" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
       "delete": { "tags": ["Detalles Plaza"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
     },
-    "/api/detalles-acceso": {
-      "get": { "tags": ["Detalles Acceso"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de detalles" } } },
-      "post": {
-        "tags": ["Detalles Acceso"], "summary": "Crear",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "idLogV": { "type": "integer" },
-                  "idVehiculo": { "type": "integer" },
-                  "idApartamento": { "type": "integer" },
-                  "estadoRegistro": { "type": "string" },
-                  "duracionMinutos": { "type": "integer" },
-                  "nombreResidente": { "type": "string" }
-                },
-                "required": ["idLogV", "estadoRegistro"]
-              }
-            }
-          }
-        },
-        "responses": { "201": { "description": "Creado" } }
-      }
-    },
-    "/api/detalles-acceso/{id}": {
-      "get": { "tags": ["Detalles Acceso"], "summary": "Obtener por ID", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "Detalle encontrado" } } },
-      "put": { "tags": ["Detalles Acceso"], "summary": "Actualizar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "idLogV": { "type": "integer" }, "idVehiculo": { "type": "integer" }, "idApartamento": { "type": "integer" }, "estadoRegistro": { "type": "string" }, "duracionMinutos": { "type": "integer" }, "nombreResidente": { "type": "string" } } } } } }, "responses": { "200": { "description": "Actualizado" } } },
-      "delete": { "tags": ["Detalles Acceso"], "summary": "Eliminar", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "204": { "description": "Eliminado" } } }
-    },
     "/api/logs-acceso": {
       "get": { "tags": ["Logs Acceso"], "summary": "Listar todos", "responses": { "200": { "description": "Lista de logs" } } },
       "post": {
