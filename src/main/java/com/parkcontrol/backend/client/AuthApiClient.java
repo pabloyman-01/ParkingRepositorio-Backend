@@ -24,7 +24,7 @@ public class AuthApiClient {
     @PostConstruct
     public void init() {
         try {
-            login("admin", "admin123");
+            login("admin@condosaas.com", "admin123");
             log.info("Autenticacion exitosa en API Central");
         } catch (Exception e) {
             log.warn("No se pudo autenticar en API Central: {}", e.getMessage());
@@ -32,10 +32,10 @@ public class AuthApiClient {
     }
 
     @SuppressWarnings("unchecked")
-    public String login(String username, String password) {
+    public String login(String email, String password) {
         Map<String, Object> response = restClient.post()
-            .uri("/auth/login")
-            .body(Map.of("username", username, "password", password))
+            .uri("/api/auth/login")
+            .body(Map.of("email", email, "password", password))
             .retrieve()
             .body(Map.class);
         if (response != null && response.containsKey("token")) {
