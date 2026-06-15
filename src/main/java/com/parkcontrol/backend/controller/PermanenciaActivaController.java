@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/permanencias-activas")
@@ -43,5 +44,16 @@ public class PermanenciaActivaController {
     public ApiResponse<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ApiResponse.ok(null);
+    }
+
+    // Control de acceso: registra entrada/salida de un vehículo por placa (proxy a la API Central).
+    @PostMapping("/registrar-entrada")
+    public ApiResponse<PermanenciaActiva> registrarEntrada(@RequestBody Map<String, Object> body) {
+        return ApiResponse.ok(service.registrarEntrada(body));
+    }
+
+    @PostMapping("/registrar-salida")
+    public ApiResponse<PermanenciaActiva> registrarSalida(@RequestBody Map<String, Object> body) {
+        return ApiResponse.ok(service.registrarSalida(body));
     }
 }

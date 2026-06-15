@@ -13,4 +13,4 @@ app:
 
 logging:
   level:
-    com.parkcontrol: DEBUG
+    "[com.parkcontrol]": DEBUG

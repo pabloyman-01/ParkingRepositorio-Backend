@@ -28,7 +28,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(Integer userId, String email, Integer roleId, String roleName) {
         Date now = new Date();
         return Jwts.builder()
-                .subject(userId.toString())
+                .subject(String.valueOf(userId))
                 .claim("email", email)
                 .claim("roleId", roleId)
                 .claim("roleName", roleName)
@@ -41,7 +41,7 @@ public class JwtTokenProvider {
     public String generateRefreshToken(Integer userId) {
         Date now = new Date();
         return Jwts.builder()
-                .subject(userId.toString())
+                .subject(String.valueOf(userId))
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + refreshExpirationMs))
                 .signWith(key)

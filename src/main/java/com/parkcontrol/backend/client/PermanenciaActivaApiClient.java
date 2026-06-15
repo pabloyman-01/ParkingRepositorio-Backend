@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("null") // Falsos positivos del null-analysis sobre la API de Spring RestClient
 public class PermanenciaActivaApiClient {
     private final RestClient restClient;
 
@@ -23,6 +24,7 @@ public class PermanenciaActivaApiClient {
             .uri("/api/permanencias")
             .retrieve()
             .body(new ParameterizedTypeReference<List<PermanenciaActivaResponseDTO>>() {});
+        if (dtos == null) return List.of();
         return dtos.stream()
             .map(MappingUtil::toPermanenciaActiva)
             .toList();
@@ -75,5 +77,25 @@ public class PermanenciaActivaApiClient {
             .uri("/api/permanencias/{id}/delete", id)
             .retrieve()
             .toBodilessEntity();
+    }
+
+    // Flujo de control de acceso: registra la entrada de un vehículo por su placa.
+    public PermanenciaActiva registrarEntrada(Map<String, Object> body) {
+        PermanenciaActivaResponseDTO dto = restClient.post()
+            .uri("/api/permanencias/registrar-entrada")
+            .body(body)
+            .retrieve()
+            .body(PermanenciaActivaResponseDTO.class);
+        return MappingUtil.toPermanenciaActiva(dto);
+    }
+
+    // Flujo de control de acceso: registra la salida de un vehículo por su placa.
+    public PermanenciaActiva registrarSalida(Map<String, Object> body) {
+        PermanenciaActivaResponseDTO dto = restClient.post()
+            .uri("/api/permanencias/registrar-salida")
+            .body(body)
+            .retrieve()
+            .body(PermanenciaActivaResponseDTO.class);
+        return MappingUtil.toPermanenciaActiva(dto);
     }
 }

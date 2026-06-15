@@ -18,4 +18,13 @@ public class Vehiculo {
     private String propietarioNombre;
     private Integer idApartamento;
     private Integer idUsuarioPropietario;
+    // Datos enriquecidos (de la API Central) para la ficha de control de acceso.
+    private String marca;
+    private String modelo;
+    private String color;
+    private String tipoOcupante;
+    private String unidad;
+    private Integer pisoNumero;
+    private String torreNombre;
+    private String condominioNombre;
 }
