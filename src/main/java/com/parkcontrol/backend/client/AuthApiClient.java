@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClient;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("null") // Falsos positivos del null-analysis sobre la API de Spring RestClient
 public class AuthApiClient {
     private static final Logger log = LoggerFactory.getLogger(AuthApiClient.class);
     private final RestClient restClient;
@@ -24,7 +25,7 @@ public class AuthApiClient {
     @PostConstruct
     public void init() {
         try {
-            login("admin@condosaas.com", "admin123");
+            login("admin@condosaas.com", "Admin123");
             log.info("Autenticacion exitosa en API Central");
         } catch (Exception e) {
             log.warn("No se pudo autenticar en API Central: {}", e.getMessage());
