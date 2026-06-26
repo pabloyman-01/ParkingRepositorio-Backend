@@ -15,4 +15,8 @@ public class PermanenciaActiva {
     private Integer idApartamento;
     private String placa;
     private LocalDateTime horaEntrada;
+    // Datos enriquecidos (de la API Central) para el historial y estancias activas.
+    private LocalDateTime horaSalida;
+    private String estado;
+    private Integer idVehiculo;
 }
