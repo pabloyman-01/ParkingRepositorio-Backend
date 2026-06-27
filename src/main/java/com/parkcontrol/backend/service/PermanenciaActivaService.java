@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +32,13 @@ public class PermanenciaActivaService {
 
     public void delete(Integer id) {
         apiProvider.delete(id);
+    }
+
+    public PermanenciaActiva registrarEntrada(Map<String, Object> body) {
+        return apiProvider.registrarEntrada(body);
+    }
+
+    public PermanenciaActiva registrarSalida(Map<String, Object> body) {
+        return apiProvider.registrarSalida(body);
     }
 }

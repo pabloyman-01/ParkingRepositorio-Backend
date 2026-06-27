@@ -6,6 +6,7 @@ import com.parkcontrol.backend.client.PermanenciaActivaApiClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -30,5 +31,13 @@ public class PermanenciaActivaApiProvider {
 
     public void delete(Integer id) {
         client.delete(id);
+    }
+
+    public PermanenciaActiva registrarEntrada(Map<String, Object> body) {
+        return client.registrarEntrada(body);
+    }
+
+    public PermanenciaActiva registrarSalida(Map<String, Object> body) {
+        return client.registrarSalida(body);
     }
 }
