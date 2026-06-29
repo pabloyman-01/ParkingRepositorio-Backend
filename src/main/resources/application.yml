@@ -11,6 +11,13 @@ app:
     expiration-ms: ${JWT_EXPIRATION_MS:28800000}
     refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
 
+neon:
+  datasource:
+    url: ${NEON_DATASOURCE_URL:jdbc:postgresql://ep-solitary-bird-aceiuk5i-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require}
+    username: ${NEON_DATASOURCE_USERNAME:neondb_owner}
+    password: ${NEON_DATASOURCE_PASSWORD:npg_jWQhv5EM1orI}
+    driver-class-name: org.postgresql.Driver
+
 logging:
   level:
     "[com.parkcontrol]": DEBUG
