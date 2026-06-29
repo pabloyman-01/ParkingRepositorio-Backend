@@ -20,4 +20,7 @@ public class UsuarioResponseDTO {
     private Long rolId;
     private String rolNombre;
     private Long apartamentoId;
+    private Long condominioId;
+    private String condominioNombre;
+    private String unidad;
 }

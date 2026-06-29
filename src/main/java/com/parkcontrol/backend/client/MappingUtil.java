@@ -60,7 +60,9 @@ public class MappingUtil {
             .email(dto.getEmail())
             .passwordHash("")
             .idRol(dto.getRolId() != null ? dto.getRolId().intValue() : null)
-            .idCondominio(null)
+            .idCondominio(dto.getCondominioId() != null ? dto.getCondominioId().intValue() : null)
+            .condominioNombre(dto.getCondominioNombre())
+            .unidad(dto.getUnidad())
             .build();
     }
 
