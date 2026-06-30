@@ -7,6 +7,7 @@ import com.parkcontrol.backend.service.PermanenciaActivaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PermanenciaActivaController {
     private final PermanenciaActivaService service;
+    private final JdbcTemplate neonJdbcTemplate;
 
     @GetMapping
     public ApiResponse<List<PermanenciaActiva>> getAll() {
@@ -46,14 +48,41 @@ public class PermanenciaActivaController {
         return ApiResponse.ok(null);
     }
 
-    // Control de acceso: registra entrada/salida de un vehículo por placa (proxy a la API Central).
     @PostMapping("/registrar-entrada")
-    public ApiResponse<PermanenciaActiva> registrarEntrada(@RequestBody Map<String, Object> body) {
-        return ApiResponse.ok(service.registrarEntrada(body));
+    public ApiResponse<?> registrarEntrada(@RequestBody Map<String, Object> body) {
+        String placa = (String) body.get("placa");
+        if (placa == null || placa.isBlank()) {
+            return ApiResponse.error("La placa es requerida");
+        }
+        try {
+            List<Integer> ids = neonJdbcTemplate.queryForList(
+                "SELECT id_vehiculo FROM vehiculo WHERE placa = ?", Integer.class, placa);
+            if (ids.isEmpty()) {
+                return ApiResponse.error("Vehículo no encontrado: " + placa);
+            }
+            Integer idVehiculo = ids.get(0);
+            neonJdbcTemplate.update(
+                "INSERT INTO log_acceso_vehicular (tipo, metodo, fecha_hora, id_vehiculo) VALUES ('ENTRADA', 'MANUAL', NOW(), ?)",
+                idVehiculo);
+            return ApiResponse.ok(Map.of("placa", placa, "estado", "ENTRADA_REGISTRADA"));
+        } catch (Exception e) {
+            return ApiResponse.error("Error al registrar entrada: " + e.getMessage());
+        }
     }
 
     @PostMapping("/registrar-salida")
-    public ApiResponse<PermanenciaActiva> registrarSalida(@RequestBody Map<String, Object> body) {
-        return ApiResponse.ok(service.registrarSalida(body));
+    public ApiResponse<?> registrarSalida(@RequestBody Map<String, Object> body) {
+        String placa = (String) body.get("placa");
+        if (placa == null || placa.isBlank()) {
+            return ApiResponse.error("La placa es requerida");
+        }
+        try {
+            neonJdbcTemplate.update(
+                "INSERT INTO log_acceso_vehicular (tipo, metodo, fecha_hora, id_vehiculo) VALUES ('SALIDA', 'MANUAL', NOW(), (SELECT id_vehiculo FROM vehiculo WHERE placa = ?))",
+                placa);
+            return ApiResponse.ok(Map.of("placa", placa, "estado", "SALIDA_REGISTRADA"));
+        } catch (Exception e) {
+            return ApiResponse.error("Error al registrar salida: " + e.getMessage());
+        }
     }
 }
