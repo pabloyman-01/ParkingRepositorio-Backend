@@ -40,14 +40,16 @@ public class PermanenciaActivaService {
         String placa = (String) body.get("placa");
         if (placa != null && !placa.isBlank()) {
             try {
-                List<Integer> ids = neonJdbcTemplate.queryForList(
+                Integer idVehiculo = neonJdbcTemplate.queryForObject(
                     "SELECT id_vehiculo FROM vehiculo WHERE placa = ?", Integer.class, placa);
-                if (!ids.isEmpty()) {
+                if (idVehiculo != null) {
                     neonJdbcTemplate.update(
                         "INSERT INTO log_acceso_vehicular (tipo, metodo, fecha_hora, id_vehiculo) VALUES ('ENTRADA', 'MANUAL', NOW(), ?)",
-                        ids.get(0));
+                        idVehiculo);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                throw new RuntimeException("Error al registrar entrada: " + e.getMessage());
+            }
         }
         return new PermanenciaActiva();
     }
@@ -59,7 +61,9 @@ public class PermanenciaActivaService {
                 neonJdbcTemplate.update(
                     "INSERT INTO log_acceso_vehicular (tipo, metodo, fecha_hora, id_vehiculo) VALUES ('SALIDA', 'MANUAL', NOW(), (SELECT id_vehiculo FROM vehiculo WHERE placa = ?))",
                     placa);
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                throw new RuntimeException("Error al registrar salida: " + e.getMessage());
+            }
         }
         return new PermanenciaActiva();
     }
