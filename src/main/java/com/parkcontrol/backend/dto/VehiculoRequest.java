@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 public record VehiculoRequest(
     @NotBlank String matricula,
     String marcaModelo,
-    @NotBlank String tipoRegistro,
-    @NotBlank String estado,
+    String tipoRegistro,
+    String estado,
     LocalDateTime fechaExpiracion,
     String propietarioNombre,
-    @NotNull Integer idApartamento,
+    Integer idApartamento,
     Integer idUsuarioPropietario
 ) {}
