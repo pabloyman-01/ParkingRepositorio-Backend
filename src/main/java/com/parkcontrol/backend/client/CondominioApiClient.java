@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("null") // Falsos positivos del null-analysis sobre la API de Spring RestClient
 public class CondominioApiClient {
     private final RestClient restClient;
 
@@ -23,6 +24,7 @@ public class CondominioApiClient {
             .uri("/api/condominios")
             .retrieve()
             .body(new ParameterizedTypeReference<List<CondominioResponseDTO>>() {});
+        if (dtos == null) return List.of();
         return dtos.stream()
             .map(MappingUtil::toCondominio)
             .toList();

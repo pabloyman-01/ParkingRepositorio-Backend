@@ -13,11 +13,11 @@
     <artifactId>backend</artifactId>
     <version>1.0.0</version>
     <name>ParkControl Backend</name>
-    <description>Sistema de gesti&oacute;n de estacionamientos</description>
+    <description>Sistema de gestion de estacionamientos</description>
     <properties>
         <java.version>21</java.version>
         <jjwt.version>0.12.6</jjwt.version>
-        <lombok.version>1.18.40</lombok.version>
+        <lombok.version>1.18.46</lombok.version>
     </properties>
     <dependencies>
         <dependency>
@@ -27,6 +27,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,6 +71,22 @@
     </dependencies>
     <build>
         <plugins>
+            <!-- Lombok como annotation processor explícito: sin esto, algunos entornos
+                 (Maven por consola con JDK nuevo) no generan getters/builders y la
+                 compilación falla. Con esto compila por consola y en cualquier IDE. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

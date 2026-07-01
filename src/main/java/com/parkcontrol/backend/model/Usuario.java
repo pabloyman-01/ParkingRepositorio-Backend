@@ -13,4 +13,6 @@ public class Usuario {
     private String passwordHash;
     private Integer idRol;
     private Integer idCondominio;
+    private String condominioNombre;
+    private String unidad;
 }

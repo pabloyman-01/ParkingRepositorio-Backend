@@ -60,7 +60,9 @@ public class MappingUtil {
             .email(dto.getEmail())
             .passwordHash("")
             .idRol(dto.getRolId() != null ? dto.getRolId().intValue() : null)
-            .idCondominio(null)
+            .idCondominio(dto.getCondominioId() != null ? dto.getCondominioId().intValue() : null)
+            .condominioNombre(dto.getCondominioNombre())
+            .unidad(dto.getUnidad())
             .build();
     }
 
@@ -70,10 +72,19 @@ public class MappingUtil {
             .idVehiculo(dto.getId() != null ? dto.getId().intValue() : null)
             .matricula(dto.getPlaca())
             .marcaModelo((dto.getMarca() != null ? dto.getMarca() : "") + " " + (dto.getModelo() != null ? dto.getModelo() : ""))
-            .tipoRegistro("Propietario")
+            .marca(dto.getMarca())
+            .modelo(dto.getModelo())
+            .color(dto.getColor())
+            .tipoRegistro(dto.getTipoOcupante() != null ? dto.getTipoOcupante() : "Propietario")
+            .tipoOcupante(dto.getTipoOcupante())
             .estado(dto.getEstado())
-            .idApartamento(null)
+            .propietarioNombre(dto.getUsuarioNombre())
+            .idApartamento(dto.getApartamentoId() != null ? dto.getApartamentoId().intValue() : null)
             .idUsuarioPropietario(dto.getUsuarioId() != null ? dto.getUsuarioId().intValue() : null)
+            .unidad(dto.getUnidad())
+            .pisoNumero(dto.getPisoNumero())
+            .torreNombre(dto.getTorreNombre())
+            .condominioNombre(dto.getCondominioNombre())
             .build();
     }
 
@@ -83,6 +94,12 @@ public class MappingUtil {
             .idEstacionamiento(dto.getId() != null ? dto.getId().intValue() : null)
             .codigoPlaza(dto.getCodigo())
             .tipo(dto.getEstadoOcupacion())
+            .estadoOcupacion(dto.getEstadoOcupacion())
+            .zonaNombre(dto.getZonaNombre())
+            .idCondominio(dto.getCondominioId() != null ? dto.getCondominioId().intValue() : null)
+            .condominioNombre(dto.getCondominioNombre())
+            .idVehiculoActual(dto.getVehiculoActualId() != null ? dto.getVehiculoActualId().intValue() : null)
+            .placaActual(dto.getPlacaActual())
             .idApartamento(null)
             .build();
     }
@@ -114,6 +131,9 @@ public class MappingUtil {
             .idLogV(dto.getLogEntradaId() != null ? dto.getLogEntradaId().intValue() : null)
             .placa(dto.getPlaca())
             .horaEntrada(dto.getFechaEntrada())
+            .horaSalida(dto.getFechaSalida())
+            .estado(dto.getEstado())
+            .idVehiculo(dto.getVehiculoId() != null ? dto.getVehiculoId().intValue() : null)
             .build();
     }
 

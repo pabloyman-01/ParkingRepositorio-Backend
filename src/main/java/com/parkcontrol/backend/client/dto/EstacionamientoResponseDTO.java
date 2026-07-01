@@ -16,4 +16,8 @@ public class EstacionamientoResponseDTO {
     private Long zonaEstacionamientoId;
     private String zonaNombre;
     private Long condominioId;
+    // Datos enriquecidos que ya devuelve la API Central.
+    private String condominioNombre;
+    private Long vehiculoActualId;
+    private String placaActual;
 }
