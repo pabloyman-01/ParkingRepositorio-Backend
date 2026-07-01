@@ -7,6 +7,7 @@ import com.parkcontrol.backend.service.PermanenciaActivaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,12 +48,24 @@ public class PermanenciaActivaController {
     }
 
     @PostMapping("/registrar-entrada")
-    public ApiResponse<PermanenciaActiva> registrarEntrada(@RequestBody Map<String, Object> body) {
-        return ApiResponse.ok(service.registrarEntrada(body));
+    public ApiResponse<?> registrarEntrada(@RequestBody Map<String, Object> body) {
+        try {
+            return ApiResponse.ok(service.registrarEntrada(body));
+        } catch (HttpStatusCodeException e) {
+            return ApiResponse.error("Error en API Central: " + e.getResponseBodyAsString());
+        } catch (Exception e) {
+            return ApiResponse.error("Error al registrar entrada");
+        }
     }
 
     @PostMapping("/registrar-salida")
-    public ApiResponse<PermanenciaActiva> registrarSalida(@RequestBody Map<String, Object> body) {
-        return ApiResponse.ok(service.registrarSalida(body));
+    public ApiResponse<?> registrarSalida(@RequestBody Map<String, Object> body) {
+        try {
+            return ApiResponse.ok(service.registrarSalida(body));
+        } catch (HttpStatusCodeException e) {
+            return ApiResponse.error("Error en API Central: " + e.getResponseBodyAsString());
+        } catch (Exception e) {
+            return ApiResponse.error("Error al registrar salida");
+        }
     }
 }
