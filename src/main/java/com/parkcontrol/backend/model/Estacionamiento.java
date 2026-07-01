@@ -14,6 +14,7 @@ public class Estacionamiento {
     // Datos enriquecidos (de la API Central) para el mapa tipo plano.
     private String estadoOcupacion;
     private String zonaNombre;
+    private Integer zonaEstacionamientoId;
     private Integer idCondominio;
     private String condominioNombre;
     private Integer idVehiculoActual;
