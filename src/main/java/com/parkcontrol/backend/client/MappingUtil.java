@@ -96,11 +96,11 @@ public class MappingUtil {
             .tipo(dto.getEstadoOcupacion())
             .estadoOcupacion(dto.getEstadoOcupacion())
             .zonaNombre(dto.getZonaNombre())
+            .zonaEstacionamientoId(dto.getZonaEstacionamientoId() != null ? dto.getZonaEstacionamientoId().intValue() : null)
             .idCondominio(dto.getCondominioId() != null ? dto.getCondominioId().intValue() : null)
             .condominioNombre(dto.getCondominioNombre())
             .idVehiculoActual(dto.getVehiculoActualId() != null ? dto.getVehiculoActualId().intValue() : null)
             .placaActual(dto.getPlacaActual())
-            .idApartamento(null)
             .build();
     }
 

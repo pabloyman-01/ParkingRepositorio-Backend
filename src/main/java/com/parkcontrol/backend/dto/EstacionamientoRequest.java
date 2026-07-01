@@ -1,8 +1,10 @@
 package com.parkcontrol.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record EstacionamientoRequest(
-    String codigoPlaza,
+    @JsonProperty("codigo") String codigoPlaza,
     String tipo,
     String estadoOcupacion,
-    Integer idApartamento
+    @JsonProperty("zonaEstacionamientoId") Integer idApartamento
 ) {}

@@ -55,7 +55,7 @@ public class EstacionamientoApiClient {
     public Estacionamiento update(Integer id, EstacionamientoRequest request) {
         Map<String, Object> body = Map.of(
             "codigo", request.codigoPlaza(),
-            "estadoOcupacion", "LIBRE",
+            "estadoOcupacion", request.estadoOcupacion() != null ? request.estadoOcupacion() : "LIBRE",
             "zonaEstacionamientoId", request.idApartamento()
         );
         EstacionamientoResponseDTO dto = restClient.put()

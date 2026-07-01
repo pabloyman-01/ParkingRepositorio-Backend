@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/estacionamientos")
@@ -34,8 +35,12 @@ public class EstacionamientoController {
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<Estacionamiento> update(@PathVariable Integer id, @RequestBody @Valid EstacionamientoRequest request) {
-        return ApiResponse.ok(service.update(id, request));
+    public ApiResponse<?> update(@PathVariable Integer id, @RequestBody @Valid EstacionamientoRequest request) {
+        try {
+            return ApiResponse.ok(service.update(id, request));
+        } catch (Exception e) {
+            return ApiResponse.error("Error al actualizar: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
