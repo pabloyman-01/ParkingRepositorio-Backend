@@ -4,7 +4,7 @@ Sistema de gestión de estacionamientos. Backend que actúa como **gateway** ent
 
 ## Documentación API
 
-- **Apidog:** [sizfi8yxf5.apidog.io](https://sizfi8yxf5.apidog.io)
+- **Apidog:** [5l8mea5nhx.apidog.io](https://5l8mea5nhx.apidog.io)
 - **Producción:** [https://parkingrepositorio-backend.onrender.com](https://parkingrepositorio-backend.onrender.com)
 
 ## Stack
