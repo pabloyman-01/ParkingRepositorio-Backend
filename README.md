@@ -59,16 +59,20 @@ El proyecto incluye un `Dockerfile` para desplegar en Render.
 3. Configurar variables de entorno:
 
 ```bash
-EXTERNAL_API_BASE_URL=https://parking-system-backend-zkk6.onrender.com
+# Opcional: el gateway ya apunta por defecto a la API de CondoSaaS en Render.
+EXTERNAL_API_BASE_URL=https://parking-system-backend-0chy.onrender.com
 JWT_SECRET=<tu-secreto-jwt>
 ```
 
 ## Instalación local
 
+> El gateway **no necesita base de datos**: consume la API Central de CondoSaaS
+> desplegada en Render. Arranca **solo**, sin levantar CondoSaaS ni una BD.
+
 ```bash
 git clone <url-del-repo>
 cd ParkingRepositorio-Backend
-mvn spring-boot:run
+mvn spring-boot:run        # arranca en http://localhost:8080
 ```
 
 ## Endpoints
