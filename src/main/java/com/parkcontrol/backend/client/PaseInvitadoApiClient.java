@@ -42,15 +42,13 @@ public class PaseInvitadoApiClient {
     public PaseInvitado create(PaseInvitadoRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("codigo", request.codigoPase());
-        body.put("nombreInvitado", "");
+        body.put("nombreInvitado", request.matricula());
         body.put("fechaInicio", request.fechaInicio());
         body.put("fechaFin", request.fechaFin());
         body.put("estado", request.estado());
         body.put("metodo", "MANUAL");
-        body.put("usuarioId", request.idUsuarioEmisor());
+        body.put("usuarioId", request.idUsuarioEmisor() != null ? request.idUsuarioEmisor() : 10);
         body.put("vehiculoId", null);
-        body.put("matricula", request.matricula());
-        body.put("idApartamento", request.idApartamento());
         PaseInvitadoResponseDTO dto = restClient.post()
             .uri("/api/pases-invitado/create")
             .body(body)
@@ -62,12 +60,12 @@ public class PaseInvitadoApiClient {
     public PaseInvitado update(Integer id, PaseInvitadoRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("codigo", request.codigoPase());
-        body.put("nombreInvitado", "");
+        body.put("nombreInvitado", request.matricula());
         body.put("fechaInicio", request.fechaInicio());
         body.put("fechaFin", request.fechaFin());
         body.put("estado", request.estado());
         body.put("metodo", "MANUAL");
-        body.put("usuarioId", request.idUsuarioEmisor());
+        body.put("usuarioId", request.idUsuarioEmisor() != null ? request.idUsuarioEmisor() : 10);
         body.put("vehiculoId", null);
         PaseInvitadoResponseDTO dto = restClient.put()
             .uri("/api/pases-invitado/{id}/update", id)
