@@ -33,7 +33,8 @@ public class PaseInvitadoService {
                 request.idUsuarioEmisor(),
                 request.fechaInicio(),
                 request.fechaFin(),
-                request.estado()
+                request.estado(),
+                request.nombreInvitado()
         );
         return apiProvider.create(enriched);
     }

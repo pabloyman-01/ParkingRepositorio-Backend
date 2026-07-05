@@ -11,5 +11,6 @@ public record PaseInvitadoRequest(
     Integer idUsuarioEmisor,
     @NotNull LocalDateTime fechaInicio,
     @NotNull LocalDateTime fechaFin,
-    @NotBlank String estado
+    @NotBlank String estado,
+    String nombreInvitado
 ) {}

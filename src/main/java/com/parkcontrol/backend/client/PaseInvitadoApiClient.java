@@ -42,7 +42,7 @@ public class PaseInvitadoApiClient {
     public PaseInvitado create(PaseInvitadoRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("codigo", request.codigoPase());
-        body.put("nombreInvitado", request.matricula());
+        body.put("nombreInvitado", request.nombreInvitado() != null ? request.nombreInvitado() : request.matricula());
         body.put("fechaInicio", request.fechaInicio());
         body.put("fechaFin", request.fechaFin());
         body.put("estado", request.estado());
@@ -60,7 +60,7 @@ public class PaseInvitadoApiClient {
     public PaseInvitado update(Integer id, PaseInvitadoRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("codigo", request.codigoPase());
-        body.put("nombreInvitado", request.matricula());
+        body.put("nombreInvitado", request.nombreInvitado() != null ? request.nombreInvitado() : request.matricula());
         body.put("fechaInicio", request.fechaInicio());
         body.put("fechaFin", request.fechaFin());
         body.put("estado", request.estado());
