@@ -7,6 +7,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,11 +54,10 @@ public class EstacionamientoApiClient {
     }
 
     public Estacionamiento update(Integer id, EstacionamientoRequest request) {
-        Map<String, Object> body = Map.of(
-            "codigo", request.codigoPlaza(),
-            "estadoOcupacion", request.estadoOcupacion() != null ? request.estadoOcupacion() : "LIBRE",
-            "zonaEstacionamientoId", request.idApartamento()
-        );
+        Map<String, Object> body = new HashMap<>();
+        body.put("codigo", request.codigoPlaza());
+        body.put("estadoOcupacion", request.estadoOcupacion() != null ? request.estadoOcupacion() : "LIBRE");
+        body.put("zonaEstacionamientoId", request.idApartamento());
         EstacionamientoResponseDTO dto = restClient.put()
             .uri("/api/estacionamiento/{id}/update", id)
             .body(body)
