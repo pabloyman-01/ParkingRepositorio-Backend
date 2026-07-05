@@ -148,6 +148,7 @@ public class MappingUtil {
             .fechaInicio(dto.getFechaInicio())
             .fechaFin(dto.getFechaFin())
             .estado(dto.getEstado())
+            .nombreInvitado(dto.getNombreInvitado())
             .build();
     }
 
