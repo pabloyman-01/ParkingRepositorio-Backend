@@ -29,8 +29,12 @@ public class PaseInvitadoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<PaseInvitado> create(@RequestBody @Valid PaseInvitadoRequest request) {
-        return ApiResponse.created(service.create(request));
+    public ApiResponse<?> create(@RequestBody @Valid PaseInvitadoRequest request) {
+        try {
+            return ApiResponse.created(service.create(request));
+        } catch (Exception e) {
+            return ApiResponse.error("Error al crear pase: " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
