@@ -7,6 +7,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,18 +40,17 @@ public class PaseInvitadoApiClient {
     }
 
     public PaseInvitado create(PaseInvitadoRequest request) {
-        Map<String, Object> body = Map.of(
-            "codigo", request.codigoPase(),
-            "nombreInvitado", "",
-            "fechaInicio", request.fechaInicio(),
-            "fechaFin", request.fechaFin(),
-            "estado", request.estado(),
-            "metodo", "MANUAL",
-            "usuarioId", request.idUsuarioEmisor(),
-            "vehiculoId", null,
-            "matricula", request.matricula(),
-            "idApartamento", request.idApartamento()
-        );
+        Map<String, Object> body = new HashMap<>();
+        body.put("codigo", request.codigoPase());
+        body.put("nombreInvitado", "");
+        body.put("fechaInicio", request.fechaInicio());
+        body.put("fechaFin", request.fechaFin());
+        body.put("estado", request.estado());
+        body.put("metodo", "MANUAL");
+        body.put("usuarioId", request.idUsuarioEmisor());
+        body.put("vehiculoId", null);
+        body.put("matricula", request.matricula());
+        body.put("idApartamento", request.idApartamento());
         PaseInvitadoResponseDTO dto = restClient.post()
             .uri("/api/pases-invitado/create")
             .body(body)
@@ -60,16 +60,15 @@ public class PaseInvitadoApiClient {
     }
 
     public PaseInvitado update(Integer id, PaseInvitadoRequest request) {
-        Map<String, Object> body = Map.of(
-            "codigo", request.codigoPase(),
-            "nombreInvitado", "",
-            "fechaInicio", request.fechaInicio(),
-            "fechaFin", request.fechaFin(),
-            "estado", request.estado(),
-            "metodo", "MANUAL",
-            "usuarioId", request.idUsuarioEmisor(),
-            "vehiculoId", null
-        );
+        Map<String, Object> body = new HashMap<>();
+        body.put("codigo", request.codigoPase());
+        body.put("nombreInvitado", "");
+        body.put("fechaInicio", request.fechaInicio());
+        body.put("fechaFin", request.fechaFin());
+        body.put("estado", request.estado());
+        body.put("metodo", "MANUAL");
+        body.put("usuarioId", request.idUsuarioEmisor());
+        body.put("vehiculoId", null);
         PaseInvitadoResponseDTO dto = restClient.put()
             .uri("/api/pases-invitado/{id}/update", id)
             .body(body)
