@@ -45,7 +45,7 @@ public class PermanenciaActivaService {
             logService.create(new LogAccesoVehicularRequest(
                     null,
                     (String) body.getOrDefault("placa", ""),
-                    "ENTRADA",
+                    (String) body.getOrDefault("tipoOcupante", "VISITANTE"),
                     (String) body.getOrDefault("metodo", "MANUAL"),
                     LocalDateTime.now(),
                     null
@@ -62,7 +62,7 @@ public class PermanenciaActivaService {
             logService.create(new LogAccesoVehicularRequest(
                     null,
                     (String) body.getOrDefault("placa", ""),
-                    "SALIDA",
+                    (String) body.getOrDefault("tipoOcupante", "VISITANTE"),
                     (String) body.getOrDefault("metodo", "MANUAL"),
                     LocalDateTime.now(),
                     null
