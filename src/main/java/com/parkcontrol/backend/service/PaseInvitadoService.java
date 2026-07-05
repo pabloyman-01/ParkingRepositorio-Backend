@@ -1,5 +1,6 @@
 package com.parkcontrol.backend.service;
 
+import com.parkcontrol.backend.common.util.PaseCodeGenerator;
 import com.parkcontrol.backend.dto.PaseInvitadoRequest;
 import com.parkcontrol.backend.model.PaseInvitado;
 import com.parkcontrol.backend.provider.api.PaseInvitadoApiProvider;
@@ -22,7 +23,19 @@ public class PaseInvitadoService {
     }
 
     public PaseInvitado create(PaseInvitadoRequest request) {
-        return apiProvider.create(request);
+        String code = (request.codigoPase() == null || request.codigoPase().isBlank())
+                ? PaseCodeGenerator.generate()
+                : request.codigoPase();
+        PaseInvitadoRequest enriched = new PaseInvitadoRequest(
+                code,
+                request.matricula(),
+                request.idApartamento(),
+                request.idUsuarioEmisor(),
+                request.fechaInicio(),
+                request.fechaFin(),
+                request.estado()
+        );
+        return apiProvider.create(enriched);
     }
 
     public PaseInvitado update(Integer id, PaseInvitadoRequest request) {

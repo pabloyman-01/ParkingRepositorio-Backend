@@ -47,7 +47,9 @@ public class PaseInvitadoApiClient {
             "estado", request.estado(),
             "metodo", "MANUAL",
             "usuarioId", request.idUsuarioEmisor(),
-            "vehiculoId", null
+            "vehiculoId", null,
+            "matricula", request.matricula(),
+            "idApartamento", request.idApartamento()
         );
         PaseInvitadoResponseDTO dto = restClient.post()
             .uri("/api/pases-invitado/create")
