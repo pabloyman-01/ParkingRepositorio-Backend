@@ -95,6 +95,12 @@ public class MappingUtil {
             .codigoPlaza(dto.getCodigo())
             .tipo(dto.getEstadoOcupacion())
             .estadoOcupacion(dto.getEstadoOcupacion())
+            // Spec V6: tipo de vehículo, cupo y ocupación de la plaza (para el mapa).
+            .tipoVehiculo(dto.getTipoVehiculo())
+            .capacidad(dto.getCapacidad())
+            .ocupacionActual(dto.getOcupacionActual())
+            .apartamentoNumero(dto.getApartamentoNumero())
+            .idApartamento(dto.getApartamentoId() != null ? dto.getApartamentoId().intValue() : null)
             .zonaNombre(dto.getZonaNombre())
             .zonaEstacionamientoId(dto.getZonaEstacionamientoId() != null ? dto.getZonaEstacionamientoId().intValue() : null)
             .idCondominio(dto.getCondominioId() != null ? dto.getCondominioId().intValue() : null)

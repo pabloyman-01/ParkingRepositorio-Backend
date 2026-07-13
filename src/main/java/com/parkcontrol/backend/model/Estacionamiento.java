@@ -11,6 +11,11 @@ public class Estacionamiento {
     private String codigoPlaza;
     private String tipo;
     private Integer idApartamento;
+    // Spec V6: tipo de vehículo (AUTO/MOTO), cupo y ocupación actual (para el mapa).
+    private String tipoVehiculo;
+    private Integer capacidad;
+    private Integer ocupacionActual;
+    private String apartamentoNumero;
     // Datos enriquecidos (de la API Central) para el mapa tipo plano.
     private String estadoOcupacion;
     private String zonaNombre;
