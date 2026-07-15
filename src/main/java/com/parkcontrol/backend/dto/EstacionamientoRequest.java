@@ -6,5 +6,6 @@ public record EstacionamientoRequest(
     @JsonProperty("codigo") String codigoPlaza,
     String tipo,
     String estadoOcupacion,
-    @JsonProperty("zonaEstacionamientoId") Integer idApartamento
+    @JsonProperty("zonaEstacionamientoId") Integer idApartamento,
+    Integer idVehiculoActual
 ) {}

@@ -57,7 +57,12 @@ public class EstacionamientoApiClient {
         Map<String, Object> body = new HashMap<>();
         body.put("codigo", request.codigoPlaza());
         body.put("estadoOcupacion", request.estadoOcupacion() != null ? request.estadoOcupacion() : "LIBRE");
-        body.put("zonaEstacionamientoId", request.idApartamento());
+        if (request.idApartamento() != null) {
+            body.put("zonaEstacionamientoId", request.idApartamento());
+        }
+        if (request.idVehiculoActual() != null) {
+            body.put("vehiculoActualId", request.idVehiculoActual());
+        }
         EstacionamientoResponseDTO dto = restClient.put()
             .uri("/api/estacionamiento/{id}/update", id)
             .body(body)
