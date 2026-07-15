@@ -53,4 +53,19 @@ public class PrestamoPlazaStore {
                         && p.getFechaFin() != null && p.getFechaFin().isAfter(now))
                 .findFirst().orElse(null);
     }
+
+    public PrestamoPlaza findByIdEstacionamientoCualquierEstado(Integer idEstacionamiento) {
+        return store.values().stream()
+                .filter(p -> idEstacionamiento.equals(p.getIdEstacionamiento()))
+                .findFirst().orElse(null);
+    }
+
+    public boolean existsOverlapping(Integer idEstacionamiento, LocalDateTime inicio, LocalDateTime fin, Integer excludeId) {
+        return store.values().stream().anyMatch(p ->
+                "ACTIVO".equals(p.getEstado())
+                && idEstacionamiento.equals(p.getIdEstacionamiento())
+                && (excludeId == null || !excludeId.equals(p.getIdPrestamo()))
+                && p.getFechaInicio() != null && p.getFechaInicio().isBefore(fin)
+                && p.getFechaFin() != null && p.getFechaFin().isAfter(inicio));
+    }
 }

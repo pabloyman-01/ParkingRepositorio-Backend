@@ -5,6 +5,7 @@ import com.parkcontrol.backend.model.Estacionamiento;
 import com.parkcontrol.backend.model.PrestamoPlaza;
 import com.parkcontrol.backend.model.PropietarioPlaza;
 import com.parkcontrol.backend.provider.api.EstacionamientoApiProvider;
+import com.parkcontrol.backend.provider.api.VehiculoApiProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class EstacionamientoService {
     private final EstacionamientoApiProvider apiProvider;
     private final PropietarioPlazaStore propietarioStore;
     private final PrestamoPlazaStore prestamoStore;
+    private final VehiculoApiProvider vehiculoProvider;
 
     public List<Estacionamiento> findAll() {
         List<Estacionamiento> plazas = apiProvider.findAll();
@@ -45,7 +47,8 @@ public class EstacionamientoService {
 
     private void enriquecer(Estacionamiento e) {
         PropietarioPlaza prop = propietarioStore.findByIdEstacionamiento(e.getIdEstacionamiento());
-        PrestamoPlaza prestamo = prestamoStore.findByIdEstacionamientoActivo(e.getIdEstacionamiento());
+        PrestamoPlaza prestamoActivo = prestamoStore.findByIdEstacionamientoActivo(e.getIdEstacionamiento());
+        PrestamoPlaza prestamoCualquiera = prestamoStore.findByIdEstacionamientoCualquierEstado(e.getIdEstacionamiento());
 
         if (prop != null) {
             e.setPropietarioId(prop.getIdPropietario());
@@ -54,13 +57,26 @@ public class EstacionamientoService {
 
         boolean ocupada = e.getIdVehiculoActual() != null;
 
-        if (ocupada && prestamo != null) {
-            e.setOcupanteNombre(prestamo.getNombreUsuarioAutorizado());
+        if (ocupada && prestamoActivo != null) {
+            e.setOcupanteNombre(prestamoActivo.getNombreUsuarioAutorizado());
             e.setTipoUso("PRESTAMO");
-            e.setPrestamoId(prestamo.getIdPrestamo());
+            e.setPrestamoId(prestamoActivo.getIdPrestamo());
+        } else if (ocupada && prestamoCualquiera != null && !"ACTIVO".equals(prestamoCualquiera.getEstado())) {
+            e.setOcupanteNombre(prestamoCualquiera.getNombreUsuarioAutorizado());
+            e.setTipoUso("PRESTAMO");
+            e.setPrestamoId(prestamoCualquiera.getIdPrestamo());
+            e.setPrestamoExpirado(true);
         } else if (ocupada && prop != null) {
-            e.setOcupanteNombre(prop.getNombreUsuario());
-            e.setTipoUso("PROPIO");
+            boolean vehiculoEsDelPropietario = vehiculoProvider.findAll().stream()
+                    .anyMatch(v -> e.getIdVehiculoActual() != null
+                            && e.getIdVehiculoActual().equals(v.getIdVehiculo())
+                            && prop.getIdUsuario().equals(v.getIdUsuarioPropietario()));
+            if (vehiculoEsDelPropietario) {
+                e.setOcupanteNombre(prop.getNombreUsuario());
+                e.setTipoUso("PROPIO");
+            } else {
+                e.setTipoUso("VISITANTE");
+            }
         } else if (ocupada) {
             e.setTipoUso("VISITANTE");
         }

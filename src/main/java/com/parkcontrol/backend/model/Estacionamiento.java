@@ -25,4 +25,5 @@ public class Estacionamiento {
     private String ocupanteNombre;
     private String tipoUso; // PROPIO, PRESTAMO, VISITANTE, null
     private Integer prestamoId;
+    private Boolean prestamoExpirado;
 }

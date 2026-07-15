@@ -33,6 +33,11 @@ public class PropietarioPlazaController {
         return ApiResponse.created(service.create(request));
     }
 
+    @PutMapping("/{id}")
+    public ApiResponse<PropietarioPlaza> update(@PathVariable Integer id, @RequestBody @Valid PropietarioPlazaRequest request) {
+        return ApiResponse.ok(service.update(id, request));
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ApiResponse<Void> remove(@PathVariable Integer id) {

@@ -23,6 +23,10 @@ public class PrestamoPlazaService {
     }
 
     public PrestamoPlaza create(PrestamoPlazaRequest request) {
+        if (store.existsOverlapping(request.getIdEstacionamiento(), request.getFechaInicio(), request.getFechaFin(), null)) {
+            throw new com.parkcontrol.backend.common.exception.BusinessException(
+                    "La plaza ya tiene un prestamo activo en ese periodo", 409);
+        }
         PrestamoPlaza prestamo = PrestamoPlaza.builder()
                 .idPropietario(request.getIdPropietario())
                 .idUsuarioAutorizado(request.getIdUsuarioAutorizado())

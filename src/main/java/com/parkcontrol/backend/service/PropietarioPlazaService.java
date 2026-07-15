@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PropietarioPlazaService {
     private final PropietarioPlazaStore store;
+    private final PrestamoPlazaStore prestamoStore;
 
     public List<PropietarioPlaza> findAll() {
         return store.getAll();
@@ -36,7 +37,27 @@ public class PropietarioPlazaService {
     }
 
     public void remove(Integer id) {
+        PropietarioPlaza prop = store.get(id);
+        if (prop != null) {
+            List<com.parkcontrol.backend.model.PrestamoPlaza> activos = prestamoStore.getAll().stream()
+                    .filter(p -> p.getIdPropietario().equals(id) && "ACTIVO".equals(p.getEstado()))
+                    .toList();
+            for (var p : activos) {
+                p.setEstado("CANCELADO");
+                prestamoStore.save(p);
+            }
+        }
         store.remove(id);
+    }
+
+    public PropietarioPlaza update(Integer id, PropietarioPlazaRequest request) {
+        PropietarioPlaza existing = store.get(id);
+        if (existing == null) return null;
+        existing.setIdEstacionamiento(request.getIdEstacionamiento());
+        existing.setIdUsuario(request.getIdUsuario());
+        existing.setNombreUsuario(request.getNombreUsuario());
+        existing.setPlacaVehiculo(request.getPlacaVehiculo());
+        return store.save(existing);
     }
 
     public PropietarioPlaza findByIdEstacionamiento(Integer idEstacionamiento) {
