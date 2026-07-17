@@ -1,41 +1,62 @@
 package com.parkcontrol.backend.service;
 
+import com.parkcontrol.backend.entity.PropietarioPlazaEntity;
 import com.parkcontrol.backend.model.PropietarioPlaza;
+import com.parkcontrol.backend.repository.PropietarioPlazaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
+@RequiredArgsConstructor
 public class PropietarioPlazaStore {
-    private final Map<Integer, PropietarioPlaza> store = new ConcurrentHashMap<>();
-    private final AtomicInteger idCounter = new AtomicInteger(1);
+    private final PropietarioPlazaRepository repo;
 
     public PropietarioPlaza save(PropietarioPlaza propietario) {
-        if (propietario.getIdPropietario() == null || propietario.getIdPropietario() == 0) {
-            propietario.setIdPropietario(idCounter.getAndIncrement());
-        }
-        store.put(propietario.getIdPropietario(), propietario);
-        return propietario;
+        PropietarioPlazaEntity entity = toEntity(propietario);
+        PropietarioPlazaEntity saved = repo.save(entity);
+        return toModel(saved);
     }
 
     public PropietarioPlaza get(Integer id) {
-        return store.get(id);
+        return repo.findById(id).map(this::toModel).orElse(null);
     }
 
     public List<PropietarioPlaza> getAll() {
-        return List.copyOf(store.values());
+        return repo.findAll().stream().map(this::toModel).toList();
     }
 
     public void remove(Integer id) {
-        store.remove(id);
+        repo.deleteById(id);
     }
 
     public PropietarioPlaza findByIdEstacionamiento(Integer idEstacionamiento) {
-        return store.values().stream()
-                .filter(p -> idEstacionamiento.equals(p.getIdEstacionamiento()) && "ACTIVO".equals(p.getEstado()))
-                .findFirst().orElse(null);
+        return repo.findByIdEstacionamientoAndEstado(idEstacionamiento, "ACTIVO")
+                .map(this::toModel).orElse(null);
+    }
+
+    private PropietarioPlazaEntity toEntity(PropietarioPlaza m) {
+        return PropietarioPlazaEntity.builder()
+                .idPropietario(m.getIdPropietario())
+                .idEstacionamiento(m.getIdEstacionamiento())
+                .idUsuario(m.getIdUsuario())
+                .nombreUsuario(m.getNombreUsuario())
+                .placaVehiculo(m.getPlacaVehiculo())
+                .fechaAsignacion(m.getFechaAsignacion())
+                .estado(m.getEstado())
+                .build();
+    }
+
+    private PropietarioPlaza toModel(PropietarioPlazaEntity e) {
+        return PropietarioPlaza.builder()
+                .idPropietario(e.getIdPropietario())
+                .idEstacionamiento(e.getIdEstacionamiento())
+                .idUsuario(e.getIdUsuario())
+                .nombreUsuario(e.getNombreUsuario())
+                .placaVehiculo(e.getPlacaVehiculo())
+                .fechaAsignacion(e.getFechaAsignacion())
+                .estado(e.getEstado())
+                .build();
     }
 }

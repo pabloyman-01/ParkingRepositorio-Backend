@@ -4,9 +4,12 @@ import com.parkcontrol.backend.config.ApiProperties;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
 import java.util.Map;
 
 @Component
@@ -17,8 +20,12 @@ public class AuthApiClient {
     private String token;
 
     public AuthApiClient(ApiProperties apiProperties) {
+        ClientHttpRequestFactorySettings settings = ClientHttpRequestFactorySettings.defaults()
+            .withConnectTimeout(Duration.ofSeconds(10))
+            .withReadTimeout(Duration.ofSeconds(10));
         this.restClient = RestClient.builder()
             .baseUrl(apiProperties.getBaseUrl())
+            .requestFactory(ClientHttpRequestFactoryBuilder.detect().build(settings))
             .build();
     }
 
