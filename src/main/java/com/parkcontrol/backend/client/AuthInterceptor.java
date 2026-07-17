@@ -1,7 +1,9 @@
 package com.parkcontrol.backend.client;
 
+import com.parkcontrol.backend.config.ApiProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatusCode;
@@ -19,9 +21,15 @@ public class AuthInterceptor implements ClientHttpRequestInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(AuthInterceptor.class);
     private final AuthApiClient authApiClient;
+    private final String authEmail;
+    private final String authPassword;
 
-    public AuthInterceptor(AuthApiClient authApiClient) {
+    public AuthInterceptor(AuthApiClient authApiClient,
+                           @Value("${app.auth.email}") String authEmail,
+                           @Value("${app.auth.password}") String authPassword) {
         this.authApiClient = authApiClient;
+        this.authEmail = authEmail;
+        this.authPassword = authPassword;
     }
 
     @Override
@@ -34,7 +42,7 @@ public class AuthInterceptor implements ClientHttpRequestInterceptor {
         ClientHttpResponse response = execution.execute(request, body);
         if (response.getStatusCode() == HttpStatusCode.valueOf(401)) {
             log.warn("Token expirado, reautenticando...");
-            authApiClient.login("admin@condosaas.com", "Admin123");
+            authApiClient.login(authEmail, authPassword);
             if (authApiClient.isAuthenticated()) {
                 request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Bearer " + authApiClient.getToken());
                 response.close();
