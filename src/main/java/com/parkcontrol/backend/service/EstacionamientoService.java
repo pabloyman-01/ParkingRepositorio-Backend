@@ -5,7 +5,6 @@ import com.parkcontrol.backend.model.Estacionamiento;
 import com.parkcontrol.backend.model.PrestamoPlaza;
 import com.parkcontrol.backend.model.PropietarioPlaza;
 import com.parkcontrol.backend.model.Vehiculo;
-import com.parkcontrol.backend.model.Visitante;
 import com.parkcontrol.backend.repository.PaseInvitadoRepository;
 import com.parkcontrol.backend.provider.api.EstacionamientoApiProvider;
 import com.parkcontrol.backend.provider.api.VehiculoApiProvider;
@@ -22,7 +21,6 @@ public class EstacionamientoService {
     private final PropietarioPlazaStore propietarioStore;
     private final PrestamoPlazaStore prestamoStore;
     private final VehiculoApiProvider vehiculoProvider;
-    private final VisitanteStore visitanteStore;
     private final PaseInvitadoRepository paseInvitadoRepo;
 
     @Transactional(readOnly = true)
@@ -74,10 +72,6 @@ public class EstacionamientoService {
 
     private String buscarNombreOcupante(Estacionamiento e, List<Vehiculo> vehiculos) {
         if (e.getPlacaActual() != null) {
-            Visitante vis = visitanteStore.findByPlaca(e.getPlacaActual());
-            if (vis != null && vis.getNombre() != null && !vis.getNombre().isBlank()) {
-                return vis.getNombre();
-            }
             // Buscar en pases de invitado por placa
             var pase = paseInvitadoRepo.findAll().stream()
                     .filter(p -> e.getPlacaActual().equals(p.getMatricula())
