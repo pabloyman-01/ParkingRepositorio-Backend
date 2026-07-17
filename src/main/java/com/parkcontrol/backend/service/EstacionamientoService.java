@@ -112,7 +112,7 @@ public class EstacionamientoService {
             e.setPropietarioNombre(prop.getNombreUsuario());
         }
 
-        boolean ocupada = e.getIdVehiculoActual() != null;
+        boolean ocupada = e.getIdVehiculoActual() != null || "OCUPADO".equals(e.getEstadoOcupacion());
 
         if (ocupada && prestamoActivo != null) {
             e.setOcupanteNombre(prestamoActivo.getNombreUsuarioAutorizado());
