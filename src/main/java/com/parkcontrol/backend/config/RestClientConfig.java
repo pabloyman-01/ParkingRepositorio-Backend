@@ -17,7 +17,7 @@ public class RestClientConfig {
     public RestClient apiRestClient(ApiProperties apiProperties, AuthInterceptor authInterceptor) {
         ClientHttpRequestFactorySettings settings = ClientHttpRequestFactorySettings.defaults()
             .withConnectTimeout(Duration.ofSeconds(10))
-            .withReadTimeout(Duration.ofSeconds(120));
+            .withReadTimeout(Duration.ofSeconds(30));
 
         return RestClient.builder()
             .baseUrl(apiProperties.getBaseUrl())

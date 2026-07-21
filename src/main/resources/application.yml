@@ -7,10 +7,30 @@ external:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:Zm9vYmFyYmF6cXV4dGhpc2lzYXRlc3RzZWNyZXRmb3JwYXJrbGluZ3Rva2Vu}
+    secret: ${JWT_SECRET}
     expiration-ms: ${JWT_EXPIRATION_MS:28800000}
     refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+  auth:
+    email: ${AUTH_EMAIL:admin@condosaas.com}
+    password: ${AUTH_PASSWORD:Admin123}
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 10000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
   level:
-    "[com.parkcontrol]": DEBUG
+    "[com.parkcontrol]": INFO

@@ -24,4 +24,11 @@ public class Estacionamiento {
     private String condominioNombre;
     private Integer idVehiculoActual;
     private String placaActual;
+    // Datos enriquecidos (del store local) para propietario y ocupacion.
+    private Integer propietarioId;
+    private String propietarioNombre;
+    private String ocupanteNombre;
+    private String tipoUso; // PROPIO, PRESTAMO, VISITANTE, null
+    private Integer prestamoId;
+    private Boolean prestamoExpirado;
 }

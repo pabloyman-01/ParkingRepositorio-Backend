@@ -1,18 +1,23 @@
 package com.parkcontrol.backend.service;
 
+import com.parkcontrol.backend.dto.LogAccesoVehicularRequest;
 import com.parkcontrol.backend.dto.PermanenciaActivaRequest;
 import com.parkcontrol.backend.model.PermanenciaActiva;
 import com.parkcontrol.backend.provider.api.PermanenciaActivaApiProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PermanenciaActivaService {
     private final PermanenciaActivaApiProvider apiProvider;
+    private final LogAccesoVehicularService logService;
 
     public List<PermanenciaActiva> findAll() {
         return apiProvider.findAll();
@@ -35,10 +40,36 @@ public class PermanenciaActivaService {
     }
 
     public PermanenciaActiva registrarEntrada(Map<String, Object> body) {
-        return apiProvider.registrarEntrada(body);
+        PermanenciaActiva result = apiProvider.registrarEntrada(body);
+        try {
+            logService.create(new LogAccesoVehicularRequest(
+                    null,
+                    (String) body.getOrDefault("placa", ""),
+                    (String) body.getOrDefault("tipoOcupante", "VISITANTE"),
+                    (String) body.getOrDefault("metodo", "MANUAL"),
+                    LocalDateTime.now(),
+                    null
+            ));
+        } catch (Exception e) {
+            log.warn("No se pudo registrar el log de entrada vehicular: {}", e.getMessage());
+        }
+        return result;
     }
 
     public PermanenciaActiva registrarSalida(Map<String, Object> body) {
-        return apiProvider.registrarSalida(body);
+        PermanenciaActiva result = apiProvider.registrarSalida(body);
+        try {
+            logService.create(new LogAccesoVehicularRequest(
+                    null,
+                    (String) body.getOrDefault("placa", ""),
+                    (String) body.getOrDefault("tipoOcupante", "VISITANTE"),
+                    (String) body.getOrDefault("metodo", "MANUAL"),
+                    LocalDateTime.now(),
+                    null
+            ));
+        } catch (Exception e) {
+            log.warn("No se pudo registrar el log de salida vehicular: {}", e.getMessage());
+        }
+        return result;
     }
 }

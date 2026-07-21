@@ -6,10 +6,11 @@ import java.time.LocalDateTime;
 
 public record PaseInvitadoRequest(
     String codigoPase,
-    @NotBlank String matricula,
-    @NotNull Integer idApartamento,
+    String matricula,
+    Integer idApartamento,
     Integer idUsuarioEmisor,
     @NotNull LocalDateTime fechaInicio,
     @NotNull LocalDateTime fechaFin,
-    @NotBlank String estado
+    @NotBlank String estado,
+    String nombreInvitado
 ) {}

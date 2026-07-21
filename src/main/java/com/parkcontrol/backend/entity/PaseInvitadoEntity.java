@@ -1,14 +1,18 @@
-package com.parkcontrol.backend.model;
+package com.parkcontrol.backend.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "pases_invitados")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaseInvitado {
+public class PaseInvitadoEntity {
+    @Id
     private Integer idPase;
     private String codigoPase;
     private String matricula;

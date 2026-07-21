@@ -4,9 +4,13 @@ import com.parkcontrol.backend.config.ApiProperties;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
+import org.springframework.boot.http.client.ClientHttpRequestFactorySettings;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
 import java.util.Map;
 
 @Component
@@ -14,18 +18,28 @@ import java.util.Map;
 public class AuthApiClient {
     private static final Logger log = LoggerFactory.getLogger(AuthApiClient.class);
     private final RestClient restClient;
+    private final String authEmail;
+    private final String authPassword;
     private String token;
 
-    public AuthApiClient(ApiProperties apiProperties) {
+    public AuthApiClient(ApiProperties apiProperties,
+                         @Value("${app.auth.email}") String authEmail,
+                         @Value("${app.auth.password}") String authPassword) {
+        ClientHttpRequestFactorySettings settings = ClientHttpRequestFactorySettings.defaults()
+            .withConnectTimeout(Duration.ofSeconds(10))
+            .withReadTimeout(Duration.ofSeconds(10));
         this.restClient = RestClient.builder()
             .baseUrl(apiProperties.getBaseUrl())
+            .requestFactory(ClientHttpRequestFactoryBuilder.detect().build(settings))
             .build();
+        this.authEmail = authEmail;
+        this.authPassword = authPassword;
     }
 
     @PostConstruct
     public void init() {
         try {
-            login("admin@condosaas.com", "Admin123");
+            login(authEmail, authPassword);
             log.info("Autenticacion exitosa en API Central");
         } catch (Exception e) {
             log.warn("No se pudo autenticar en API Central: {}", e.getMessage());
